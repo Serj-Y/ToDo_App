@@ -4,14 +4,27 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --udid 397D2ED7-4847-457F-9633-1676F705850D",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@reduxjs/toolkit": "^1.8.0",
+    "axios": "^1.6.8",
+    "i18next": "^23.11.4",
+    "i18next-http-backend": "^2.5.1",
     "react": "18.2.0",
-    "react-native": "0.74.1"
+    "react-auth-code-input": "^3.2.1",
+    "react-hook-form": "^7.51.4",
+    "react-i18next": "^14.1.1",
+    "react-icons": "^5.2.1",
+    "react-native": "0.74.1",
+    "react-redux": "^7.2.6",
+    "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

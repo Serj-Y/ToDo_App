@@ -1,3 +1,3 @@
-import LoginScreen from "./SignInByEmail/ui/SignInForm/LoginScreen.tsx";
-export {LoginScreen}
+import SignInForm from "./SignInByEmail/ui/SignInForm/SignInForm.tsx";
+export {SignInForm}
 

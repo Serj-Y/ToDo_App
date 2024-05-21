@@ -1,12 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,77 +8,42 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {LoginScreen} from "./src/feautures/Auth";
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+import {StoreProvider} from "./src/app/providers/StoreProvider";
+import { Header } from './src/widgets/Header';
+import {ThemeProvider} from "./src/app/providers/ThemeProvider";
+import {useTheme} from "./src/app/providers/ThemeProvider";
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+    const isDarkMode = useColorScheme() === 'dark';
+    const { theme, toggleTheme } = useTheme();
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-         <LoginScreen/>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <StoreProvider>
+          <ThemeProvider>
+              <View style={ {backgroundColor: theme.invertedBackgroundColor}}>
+                  <SafeAreaView >
+                      <StatusBar
+                          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+                      />
+                      <View style={{backgroundColor: theme.backgroundColor, height: '120%'}}>
+                          <Header/>
+                          <ScrollView
+                              contentInsetAdjustmentBehavior="automatic"
+                          >
+                          </ScrollView>
+                      </View>
+
+                  </SafeAreaView>
+              </View>
+
+          </ThemeProvider>
+      </StoreProvider>
   );
 }
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+
+
   },
   sectionTitle: {
     fontSize: 24,

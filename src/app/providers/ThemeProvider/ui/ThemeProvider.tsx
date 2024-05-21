@@ -1,27 +1,52 @@
-import React, { FC, useMemo, useState } from 'react';
-import { LOCAL_STORAGE_THEME_KEY, Theme, ThemeContext } from '../lib/ThemeContext';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Appearance } from 'react-native';
 
-const defaultTheme = AsyncStorage.getItem(LOCAL_STORAGE_THEME_KEY);
-
-interface ThemeProviderProps {
-    initialTheme: Theme.DARK
-    children: React.ReactNode
+interface Theme {
+    backgroundColor: string;
+    invertedBackgroundColor: string;
+    primaryColor: string;
+    invertedPrimaryColor: string;
+    secondaryColor: string;
+    invertedSecondaryColor: string;
 }
 
-const ThemeProvider: FC<ThemeProviderProps> = ({ children, initialTheme }) => {
-    const [theme, setTheme] = useState<Theme>(initialTheme || defaultTheme);
+const lightTheme: Theme = {
+    backgroundColor: '#FDFDFD',
+    invertedBackgroundColor: '#16523c',
+    primaryColor: '#183A40',
+    invertedPrimaryColor: '#FDFDFD',
+    secondaryColor: '#093028',
+    invertedSecondaryColor: '#F3F1F1',
+};
 
-    const defaultProps = useMemo(() => ({
-        theme,
-        setTheme,
-    }), [theme]);
+const darkTheme: Theme = {
+    backgroundColor: '#16523c',
+    invertedBackgroundColor: '#FDFDFD',
+    primaryColor: '#FDFDFD',
+    invertedPrimaryColor: '#183A40',
+    secondaryColor: '#183A40',
+    invertedSecondaryColor: '#F3F1F1',
+};
+
+const ThemeContext = createContext({
+    theme: lightTheme,
+    toggleTheme: () => {},
+});
+
+export const useTheme = () => useContext(ThemeContext);
+
+// ThemeProvider component
+export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const colorScheme = Appearance.getColorScheme();
+    const [isDarkMode, setIsDarkMode] = useState(colorScheme === 'light');
+
+    const toggleTheme = () => {
+        setIsDarkMode(!isDarkMode);
+    };
 
     return (
-        <ThemeContext.Provider value={defaultProps}>
+        <ThemeContext.Provider value={{ theme: isDarkMode ? darkTheme : lightTheme, toggleTheme }}>
             {children}
         </ThemeContext.Provider>
     );
 };
-
-export default ThemeProvider;

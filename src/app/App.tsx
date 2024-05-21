@@ -22,7 +22,7 @@ function App() {
     return (
         <View>
             <Suspense fallback="">
-                {/*<Navbar />*/}
+                {/*<Header />*/}
                 <View>
                     {inited
                         && (

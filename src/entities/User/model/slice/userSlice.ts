@@ -3,7 +3,7 @@ import { UserSchema } from '../types/user';
 import { fetchUserData } from '../services/fetchUserData';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "../../../../shared/consts/localStorage.ts";
-import {signInByEmail} from "../../../../feautures/Auth/SignInByEmail/model/services/signInByEmail/signInByEmail.ts";
+import {signIn} from "../../../../feautures/Auth/SignInByEmail/model/services/signIn/signIn.ts";
 import {signUpByEmail} from "../../../../feautures/Auth/SignUpByEmail/model/services/signUpByEmail/signUpByEmail.ts";
 import {changePassword} from "../../../../feautures/EditUser/model/services/changePassword/changePassword.ts";
 import {changeUserName} from "../../../../feautures/EditUser/model/services/changeUserName/changeUserName.ts";
@@ -45,16 +45,16 @@ const userSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.payload as string;
             })
-            .addCase(signInByEmail.pending, (state, action) => {
+            .addCase(signIn.pending, (state, action) => {
                 state.error = undefined;
                 state.isLoading = true;
             })
-            .addCase(signInByEmail.fulfilled, (state, action) => {
+            .addCase(signIn.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state._inited = true;
                 state.authData = action.payload.user;
             })
-            .addCase(signInByEmail.rejected, (state, action) => {
+            .addCase(signIn.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload as string;
             })

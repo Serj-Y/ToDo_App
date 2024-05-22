@@ -1,3 +1,3 @@
-import Header from './ui/Header.tsx'
+import Header from './ui/Header.tsx';
 
-export {Header}
+export {Header};

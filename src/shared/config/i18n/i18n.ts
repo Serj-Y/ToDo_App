@@ -1,20 +1,14 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import Backend from 'i18next-http-backend';
+import i18next from 'i18next';
+import {initReactI18next} from 'react-i18next';
+import {APP_LANGUAGE} from '../../consts/appLanguage.ts';
+import en from './locales/en/translation.json';
+import ua from './locales/ua/translation.json';
 
-i18n
-    .use(Backend)
-    .use(initReactI18next)
-    .init({
-        fallbackLng: 'ua',
-
-        interpolation: {
-            escapeValue: false, // not needed for react as it escapes by default
-        },
-
-        backend: {
-            loadPath: '/locales/{{lng}}/{{ns}}.json',
-        },
-    });
-
-export default i18n;
+i18next.use(initReactI18next).init({
+  compatibilityJSON: 'v3',
+  fallbackLng: APP_LANGUAGE.UA,
+  resources: {
+    en: {translation: en},
+    ua: {translation: ua},
+  },
+});

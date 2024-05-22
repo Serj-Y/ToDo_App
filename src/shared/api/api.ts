@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from 'axios';
 import { BaseUrl } from '../consts/baseUrl';
 import { ACCESS_TOKEN, REFRESH_TOKEN, REQUEST_QUEUE } from '../consts/localStorage';
@@ -14,7 +15,7 @@ type TokenResponse = {
     accessToken: string;
 };
 
-// eslint-disable-next-line no-nested-ternary
+ 
 export const errorCatch = (error: any) => (error.response && error.response.data
     ? typeof error.response.data.message === 'object'
         ? error.response.data.message[0]
@@ -102,7 +103,7 @@ const retryRequests = async () => {
         while (requestQueue.length > 0) {
             const requestData = requestQueue.shift();
             try {
-                // eslint-disable-next-line no-await-in-loop
+                 
                 await $api.request(requestData).then(() => {
                     AsyncStorage.setItem(REQUEST_QUEUE, JSON.stringify(requestQueue));
                 });

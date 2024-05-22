@@ -1,3 +1,3 @@
-import SignInForm from "./SignInByEmail/ui/SignInForm/SignInForm.tsx";
-export {SignInForm}
-
+import SignInForm from './SignIn/ui/SignInForm/SignInForm.tsx';
+import ForgotPasswordForm from './SignIn/ui/ForgotPasswordForm/ForgotPasswordForm.tsx';
+export {SignInForm, ForgotPasswordForm};

@@ -1,3 +1,3 @@
-import ToDoPage from "./ui/ToDoPage/ToDoPage.tsx";
+import ToDoPage from './ui/ToDoPage/ToDoPage.tsx';
 
-export {ToDoPage} ;
+export {ToDoPage};

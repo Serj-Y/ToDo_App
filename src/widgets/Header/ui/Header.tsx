@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useTheme} from '../../../app/providers/ThemeProvider';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../app/types/route.ts';
-
+import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 interface HeaderProps {
   appName?: string;
 }
@@ -20,8 +20,6 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
   const authData = useSelector(getUserAuthData);
 
   const navigation = useNavigation<NavigationProp>();
-
-  const handleSignUp = () => {};
   const handleLogOut = () => {
     dispatch(userActions.logout());
   };
@@ -29,6 +27,12 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
   const handleSignIn = () => {
     navigation.navigate('SignIn');
   };
+  const handleSignUp = () => {
+    navigation.navigate('SignUp');
+  };
+  // const handleSettings = () => {
+  //   navigation.navigate('Settings');
+  // };
 
   return (
     <View
@@ -42,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
       <View style={styles.buttonsContainer}>
         {!authData && (
           <>
-            <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+            <PressableOpacity onPress={handleSignUp} style={styles.button}>
               <Text
                 style={[
                   styles.buttonText,
@@ -50,8 +54,8 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
                 ]}>
                 {t('Sign up')}
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+            </PressableOpacity>
+            <PressableOpacity onPress={handleSignIn} style={styles.button}>
               <Text
                 style={[
                   styles.buttonText,
@@ -59,13 +63,13 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
                 ]}>
                 {t('Sign in')}
               </Text>
-            </TouchableOpacity>
+            </PressableOpacity>
           </>
         )}
 
         {authData && (
           <>
-            <TouchableOpacity onPress={handleLogOut} style={styles.button}>
+            <PressableOpacity onPress={handleLogOut} style={styles.button}>
               <Text
                 style={[
                   styles.buttonText,
@@ -73,7 +77,14 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
                 ]}>
                 {t('Sign out')}
               </Text>
-            </TouchableOpacity>
+            </PressableOpacity>
+            {/*<PressableOpacity onPress={handleSettings}>*/}
+            {/*  <Icon*/}
+            {/*    name="cog"*/}
+            {/*    style={[{color: theme.invertedPrimaryColor}]}*/}
+            {/*    size={18}*/}
+            {/*  />*/}
+            {/*</PressableOpacity>*/}
             <Text
               style={[styles.username, {color: theme.invertedPrimaryColor}]}>
               {authData.name}

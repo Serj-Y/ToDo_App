@@ -15,7 +15,7 @@ type TokenResponse = {
     accessToken: string;
 };
 
- 
+
 export const errorCatch = (error: any) => (error.response && error.response.data
     ? typeof error.response.data.message === 'object'
         ? error.response.data.message[0]
@@ -23,7 +23,7 @@ export const errorCatch = (error: any) => (error.response && error.response.data
     : error.message);
 
 export const getNewToken = async () => {
-    const refreshToken = AsyncStorage.getItem(REFRESH_TOKEN);
+    const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN)
 
     const response = await axios.put<TokenResponse>(
         `${BaseUrl}auth/access-token`,
@@ -51,7 +51,7 @@ export const $api = axios.create({
 });
 
 $api.interceptors.request.use(async (config) => {
-    const accessToken = AsyncStorage.getItem(ACCESS_TOKEN);
+    const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN);
 
     if (config.headers && accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -103,7 +103,7 @@ const retryRequests = async () => {
         while (requestQueue.length > 0) {
             const requestData = requestQueue.shift();
             try {
-                 
+
                 await $api.request(requestData).then(() => {
                     AsyncStorage.setItem(REQUEST_QUEUE, JSON.stringify(requestQueue));
                 });

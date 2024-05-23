@@ -7,7 +7,7 @@ import {
   REFRESH_TOKEN,
 } from '../../../../shared/consts/localStorage.ts';
 import {signIn} from '../../../../feautures/Auth/SignIn/model/services/signIn/signIn.ts';
-import {signUpByEmail} from '../../../../feautures/Auth/SignUp/model/services/signUpByEmail/signUpByEmail.ts';
+import {signUp} from '../../../../feautures/Auth/SignUp/model/services/signUp/signUp.ts';
 import {changePassword} from '../../../../feautures/EditUser/model/services/changePassword/changePassword.ts';
 import {changeUserName} from '../../../../feautures/EditUser/model/services/changeUserName/changeUserName.ts';
 
@@ -60,16 +60,16 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       })
-      .addCase(signUpByEmail.pending, state => {
+      .addCase(signUp.pending, state => {
         state.error = undefined;
         state.isLoading = true;
       })
-      .addCase(signUpByEmail.fulfilled, (state, action) => {
+      .addCase(signUp.fulfilled, (state, action) => {
         state.isLoading = false;
         state._inited = true;
         state.authData = action.payload.user;
       })
-      .addCase(signUpByEmail.rejected, (state, action) => {
+      .addCase(signUp.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       })

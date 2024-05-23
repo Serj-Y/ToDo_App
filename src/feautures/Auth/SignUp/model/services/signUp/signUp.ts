@@ -15,7 +15,7 @@ interface SignUpByEmailProps {
   password: string;
 }
 
-export const signUpByEmail = createAsyncThunk<
+export const signUp = createAsyncThunk<
   UserResponse,
   SignUpByEmailProps,
   ThunkConfig<string>

@@ -1,5 +1,4 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {UserResponse} from '../../../../../../entities/User/model/types/user.ts';
 import {ThunkConfig} from '../../../../../../app/providers/StoreProvider';
 import {baseApi} from '../../../../../../shared/api/api.ts';
@@ -8,6 +7,7 @@ import {
   REFRESH_TOKEN,
 } from '../../../../../../shared/consts/localStorage.ts';
 import {fetchToDo} from '../../../../../../entities/ToDo/model/services/fetchToDo/fetchToDo.ts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LoginByUsernameProps {
   email: string;

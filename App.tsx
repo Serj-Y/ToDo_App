@@ -14,8 +14,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Header} from './src/widgets/Header/';
-import {ForgotPasswordForm, SignInForm} from './src/feautures/Auth';
+import {ForgotPasswordForm, SignInForm, SignUpForm} from './src/feautures/Auth';
 import {RootStackParamList} from './src/app/types/route.ts';
+import {Settings} from './src/feautures/Settings/index.ts';
 
 const MainScreen: React.FC = () => {
   return (
@@ -66,10 +67,32 @@ const App: React.FC = () => {
                     }}
                   />
                   <Stack.Screen
+                    name="SignUp"
+                    component={SignUpForm}
+                    options={{
+                      title: 'Sign Up',
+                      headerStyle: {
+                        backgroundColor: theme.invertedBackgroundColor,
+                      },
+                      headerTintColor: theme.invertedPrimaryColor,
+                    }}
+                  />
+                  <Stack.Screen
                     name="ForgotPassword"
                     component={ForgotPasswordForm}
                     options={{
                       title: 'Forgot Password',
+                      headerStyle: {
+                        backgroundColor: theme.invertedBackgroundColor,
+                      },
+                      headerTintColor: theme.invertedPrimaryColor,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="Settings"
+                    component={Settings}
+                    options={{
+                      title: 'Settings',
                       headerStyle: {
                         backgroundColor: theme.invertedBackgroundColor,
                       },

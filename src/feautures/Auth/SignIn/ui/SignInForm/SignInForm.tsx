@@ -73,7 +73,7 @@ const SignInForm = memo(() => {
   //   navigation.navigate('ForgotPassword');
   // };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <Text style={[styles.title, {color: theme.primaryColor}]}>
         {t('Sign in')}
       </Text>
@@ -92,7 +92,10 @@ const SignInForm = memo(() => {
               <Text style={{color: 'red'}}>{errors.email.message}</Text>
             )}
             <TextInput
-              style={[styles.input, {borderColor: theme.primaryColor}]}
+              style={[
+                styles.input,
+                {borderColor: theme.primaryColor, color: theme.primaryColor},
+              ]}
               onChangeText={onChange}
               placeholder={t('Email')}
               placeholderTextColor={theme.invertedBackgroundColor}
@@ -112,10 +115,13 @@ const SignInForm = memo(() => {
               <Text style={{color: 'red'}}>{errors.password.message}</Text>
             )}
             <TextInput
-              style={[styles.input, {borderColor: theme.primaryColor}]}
+              style={[
+                styles.input,
+                {borderColor: theme.primaryColor, color: theme.primaryColor},
+              ]}
               onChangeText={onChange}
               placeholder={t('Password')}
-              placeholderTextColor={theme.invertedBackgroundColor}
+              placeholderTextColor={theme.primaryColor}
               value={value}
               keyboardType="visible-password"
             />
@@ -140,7 +146,7 @@ const SignInForm = memo(() => {
         }}>
         <Text
           style={{
-            color: theme.invertedPrimaryColor,
+            color: theme.backgroundColor,
             textAlign: 'center',
             fontSize: 18,
           }}>

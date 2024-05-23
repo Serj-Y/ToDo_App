@@ -3,26 +3,19 @@ import {View, Text, StyleSheet} from 'react-native';
 import {useTheme} from '../../../app/providers/ThemeProvider';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {getUserAuthData, userActions} from '../../../entities/User';
+import {getUserAuthData} from '../../../entities/User';
 import {useTranslation} from 'react-i18next';
-import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../app/types/route.ts';
 import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
-interface HeaderProps {
-  appName?: string;
-}
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 type NavigationProp = StackNavigationProp<RootStackParamList>;
-const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
+const Header: React.FC = () => {
   const {t} = useTranslation();
-  const dispatch = useAppDispatch();
   const {theme} = useTheme();
   const authData = useSelector(getUserAuthData);
-
   const navigation = useNavigation<NavigationProp>();
-  const handleLogOut = () => {
-    dispatch(userActions.logout());
-  };
 
   const handleSignIn = () => {
     navigation.navigate('SignIn');
@@ -30,9 +23,9 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
   const handleSignUp = () => {
     navigation.navigate('SignUp');
   };
-  // const handleSettings = () => {
-  //   navigation.navigate('Settings');
-  // };
+  const handleSettings = () => {
+    navigation.navigate('Settings');
+  };
 
   return (
     <View
@@ -41,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
         {backgroundColor: theme.invertedBackgroundColor},
       ]}>
       <Text style={[styles.appName, {color: theme.invertedPrimaryColor}]}>
-        {appName}
+        {'ToDo'}
       </Text>
       <View style={styles.buttonsContainer}>
         {!authData && (
@@ -69,26 +62,22 @@ const Header: React.FC<HeaderProps> = ({appName = 'ToDo'}) => {
 
         {authData && (
           <>
-            <PressableOpacity onPress={handleLogOut} style={styles.button}>
-              <Text
-                style={[
-                  styles.buttonText,
-                  {color: theme.invertedPrimaryColor},
-                ]}>
-                {t('Sign out')}
-              </Text>
-            </PressableOpacity>
-            {/*<PressableOpacity onPress={handleSettings}>*/}
-            {/*  <Icon*/}
-            {/*    name="cog"*/}
-            {/*    style={[{color: theme.invertedPrimaryColor}]}*/}
-            {/*    size={18}*/}
-            {/*  />*/}
-            {/*</PressableOpacity>*/}
             <Text
               style={[styles.username, {color: theme.invertedPrimaryColor}]}>
               {authData.name}
             </Text>
+            <PressableOpacity
+              style={[
+                styles.button,
+                {backgroundColor: theme.invertedBackgroundColor},
+              ]}
+              onPress={handleSettings}>
+              <Icon
+                name="cog"
+                style={[{color: theme.invertedPrimaryColor}]}
+                size={16}
+              />
+            </PressableOpacity>
           </>
         )}
       </View>

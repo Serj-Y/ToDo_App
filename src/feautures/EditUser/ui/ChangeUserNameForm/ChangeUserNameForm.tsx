@@ -10,8 +10,7 @@ import PressableOpacity from '../../../../shared/ui/pressableOpacity/PressableOp
 import {useTheme} from '../../../../app/providers/ThemeProvider';
 
 export interface ChangeUserNameFormProps {
-  currentName: string;
-  className?: string;
+  currentName?: string;
 }
 
 interface FormData {
@@ -83,7 +82,10 @@ const ChangeUserNameForm = memo(
                 <Text style={styles.errorText}>{errors.userName?.message}</Text>
               )}
               <TextInput
-                style={[styles.input, {borderColor: theme.primaryColor}]}
+                style={[
+                  styles.input,
+                  {borderColor: theme.primaryColor, color: theme.primaryColor},
+                ]}
                 placeholderTextColor={theme.invertedBackgroundColor}
                 placeholder={t('Enter new user name')}
                 onChangeText={onChange}
@@ -140,9 +142,8 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     fontSize: 18,
-    paddingTop: 5,
+    padding: 5,
   },
-
   errorText: {
     color: 'red',
   },

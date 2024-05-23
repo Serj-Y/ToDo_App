@@ -115,7 +115,6 @@ const ChangeUserPasswordForm = memo(() => {
         name="repeatPassword"
         control={control}
         defaultValue=""
-        rules={{minLength: 2, maxLength: 50}}
         render={({field: {onChange, value}}) => (
           <>
             {errors.repeatPassword && (

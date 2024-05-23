@@ -1,5 +1,11 @@
-import React, {createContext, useContext, useState, ReactNode} from 'react';
-import {Appearance} from 'react-native';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Theme {
   backgroundColor: string;
@@ -28,26 +34,64 @@ const darkTheme: Theme = {
   invertedSecondaryColor: '#F3F1F1',
 };
 
-const ThemeContext = createContext({
+interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+  isDarkMode: boolean;
+}
+
+const ThemeContext = createContext<ThemeContextType>({
   theme: lightTheme,
   toggleTheme: () => {},
+  isDarkMode: false,
 });
 
 export const useTheme = () => useContext(ThemeContext);
 
-// ThemeProvider component
 export const ThemeProvider: React.FC<{children: ReactNode}> = ({children}) => {
-  const colorScheme = Appearance.getColorScheme();
-  const [isDarkMode, setIsDarkMode] = useState(colorScheme === 'light');
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+  useEffect(() => {
+    const loadTheme = async () => {
+      try {
+        const savedTheme = await AsyncStorage.getItem('theme');
+        if (savedTheme) {
+          setIsDarkMode(savedTheme === 'dark');
+        }
+      } catch (error) {
+        console.error('Failed to load theme:', error);
+      }
+    };
+
+    loadTheme();
+  }, []);
+
+  const toggleTheme = async () => {
+    try {
+      setIsDarkMode(prevMode => {
+        const newMode = !prevMode;
+        AsyncStorage.setItem('theme', newMode ? 'dark' : 'light');
+        return newMode;
+      });
+    } catch (error) {
+      console.error('Failed to toggle theme:', error);
+    }
   };
 
   return (
     <ThemeContext.Provider
-      value={{theme: isDarkMode ? darkTheme : lightTheme, toggleTheme}}>
+      value={{
+        theme: isDarkMode ? darkTheme : lightTheme,
+        toggleTheme,
+        isDarkMode,
+      }}>
       {children}
     </ThemeContext.Provider>
   );
+};
+
+// Custom hook to get dark mode status
+export const useIsDarkMode = () => {
+  const {isDarkMode} = useContext(ThemeContext);
+  return isDarkMode;
 };

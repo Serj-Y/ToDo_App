@@ -68,5 +68,7 @@
   "Minimum 5 symbols": "Minimum 5 symbols",
   "Invalid email": "Invalid email",
   "Something went wrong, Or User not found": "Something went wrong, Or User not found",
-  "Code must have 5 symbols": "Code must have 5 symbols"
+  "Code must have 5 symbols": "Code must have 5 symbols",
+  "Settings": "Settings",
+  "Main": "Main"
 }

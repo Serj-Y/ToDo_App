@@ -72,7 +72,7 @@ const SignUpForm = memo(() => {
     [dispatch, navigation, reset],
   );
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <Text style={[styles.title, {color: theme.primaryColor}]}>
         {t('Sign up')}
       </Text>
@@ -89,7 +89,10 @@ const SignUpForm = memo(() => {
               <Text style={styles.errorText}>{errors.name.message}</Text>
             )}
             <TextInput
-              style={[styles.input, {borderColor: theme.primaryColor}]}
+              style={[
+                styles.input,
+                {borderColor: theme.primaryColor, color: theme.primaryColor},
+              ]}
               onChangeText={onChange}
               placeholder={t('Name')}
               placeholderTextColor={theme.invertedBackgroundColor}
@@ -109,7 +112,10 @@ const SignUpForm = memo(() => {
               <Text style={styles.errorText}>{errors.email.message}</Text>
             )}
             <TextInput
-              style={[styles.input, {borderColor: theme.primaryColor}]}
+              style={[
+                styles.input,
+                {borderColor: theme.primaryColor, color: theme.primaryColor},
+              ]}
               onChangeText={onChange}
               placeholder={t('Email')}
               placeholderTextColor={theme.invertedBackgroundColor}
@@ -129,7 +135,10 @@ const SignUpForm = memo(() => {
               <Text style={styles.errorText}>{errors.password.message}</Text>
             )}
             <TextInput
-              style={[styles.input, {borderColor: theme.primaryColor}]}
+              style={[
+                styles.input,
+                {borderColor: theme.primaryColor, color: theme.primaryColor},
+              ]}
               onChangeText={onChange}
               placeholder={t('Password')}
               placeholderTextColor={theme.invertedBackgroundColor}

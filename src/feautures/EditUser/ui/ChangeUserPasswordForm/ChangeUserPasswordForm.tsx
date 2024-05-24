@@ -3,11 +3,18 @@ import React, {memo, useCallback, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import {changePassword} from '../../model/services/changePassword/changePassword';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import PressableOpacity from '../../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import {useYupValidationResolver} from '../../../../shared/lib/hooks/useYupValidationResolver/useYupValidationResolver.ts';
 import {useTheme} from '../../../../app/providers/ThemeProvider';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Assuming you are using react-native-vector-icons
 
 interface FormData {
   password: string;
@@ -35,6 +42,7 @@ const ChangeUserPasswordForm = memo(() => {
         t('Confirm password field does not match with new password'),
       ),
   });
+
   const {
     control,
     handleSubmit,
@@ -61,6 +69,11 @@ const ChangeUserPasswordForm = memo(() => {
     },
     [dispatch, reset],
   );
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+
   return (
     <View style={styles.container}>
       <Text style={[styles.title, {color: theme.primaryColor}]}>
@@ -78,14 +91,29 @@ const ChangeUserPasswordForm = memo(() => {
             {errors.password && (
               <Text style={styles.errorText}>{errors.password?.message}</Text>
             )}
-            <TextInput
-              style={[styles.input, {borderColor: theme.primaryColor}]}
-              placeholderTextColor={theme.invertedBackgroundColor}
-              placeholder={t('Enter current password')}
-              onChangeText={onChange}
-              value={value}
-              keyboardType={'visible-password'}
-            />
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: theme.primaryColor},
+              ]}>
+              <TextInput
+                style={[styles.input, {color: theme.primaryColor}]}
+                placeholderTextColor={theme.invertedBackgroundColor}
+                placeholder={t('Enter current password')}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                style={styles.eyIcon}
+                onPress={() => setShowPassword(!showPassword)}>
+                <Icon
+                  name={showPassword ? 'eye-slash' : 'eye'}
+                  size={20}
+                  color={theme.primaryColor}
+                />
+              </TouchableOpacity>
+            </View>
           </>
         )}
       />
@@ -100,14 +128,32 @@ const ChangeUserPasswordForm = memo(() => {
                 {errors.newPassword?.message}
               </Text>
             )}
-            <TextInput
-              style={[styles.input, {borderColor: theme.primaryColor}]}
-              placeholderTextColor={theme.invertedBackgroundColor}
-              placeholder={t('Enter new password')}
-              onChangeText={onChange}
-              value={value}
-              keyboardType={'visible-password'}
-            />
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: theme.primaryColor},
+              ]}>
+              <TextInput
+                style={[
+                  styles.input,
+                  {borderColor: theme.primaryColor, color: theme.primaryColor},
+                ]}
+                placeholderTextColor={theme.invertedBackgroundColor}
+                placeholder={t('Enter new password')}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry={!showNewPassword}
+              />
+              <TouchableOpacity
+                style={styles.eyIcon}
+                onPress={() => setShowNewPassword(!showNewPassword)}>
+                <Icon
+                  name={showNewPassword ? 'eye-slash' : 'eye'}
+                  size={20}
+                  color={theme.primaryColor}
+                />
+              </TouchableOpacity>
+            </View>
           </>
         )}
       />
@@ -122,14 +168,32 @@ const ChangeUserPasswordForm = memo(() => {
                 {errors.repeatPassword?.message}
               </Text>
             )}
-            <TextInput
-              style={[styles.input, {borderColor: theme.primaryColor}]}
-              placeholderTextColor={theme.invertedBackgroundColor}
-              placeholder={t('Enter confirm new password')}
-              onChangeText={onChange}
-              value={value}
-              keyboardType={'visible-password'}
-            />
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: theme.primaryColor},
+              ]}>
+              <TextInput
+                style={[
+                  styles.input,
+                  {borderColor: theme.primaryColor, color: theme.primaryColor},
+                ]}
+                placeholderTextColor={theme.invertedBackgroundColor}
+                placeholder={t('Enter confirm new password')}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry={!showRepeatPassword}
+              />
+              <TouchableOpacity
+                style={styles.eyIcon}
+                onPress={() => setShowRepeatPassword(!showRepeatPassword)}>
+                <Icon
+                  name={showRepeatPassword ? 'eye-slash' : 'eye'}
+                  size={20}
+                  color={theme.primaryColor}
+                />
+              </TouchableOpacity>
+            </View>
           </>
         )}
       />
@@ -147,23 +211,33 @@ const ChangeUserPasswordForm = memo(() => {
     </View>
   );
 });
+
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 20,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
     textAlign: 'center',
   },
-  input: {
-    height: 40,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    padding: 8,
-    marginBottom: 8,
     borderRadius: 4,
+    marginBottom: 8,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    padding: 8,
+    borderRadius: 4,
+  },
+  eyIcon: {
+    padding: 10,
   },
   button: {
     padding: 16,
@@ -174,13 +248,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
   },
-  text: {
-    textAlign: 'center',
-    fontSize: 18,
-  },
-
   errorText: {
     color: 'red',
+    paddingBottom: 10,
   },
 });
+
 export default ChangeUserPasswordForm;

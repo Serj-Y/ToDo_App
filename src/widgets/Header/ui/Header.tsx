@@ -59,7 +59,6 @@ const Header: React.FC = () => {
             </PressableOpacity>
           </>
         )}
-
         {authData && (
           <>
             <Text

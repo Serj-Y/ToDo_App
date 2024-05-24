@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useAppDispatch} from '../../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import {useSelector} from 'react-redux';
@@ -18,6 +18,9 @@ import {RootStackParamList} from '../../../../../app/types/route.ts';
 import {Controller, useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import {useYupValidationResolver} from '../../../../../shared/lib/hooks/useYupValidationResolver/useYupValidationResolver.ts';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import PressableOpacity from '../../../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
+import {getLoginIsLoading} from '../../model/selectors/getLoginIsLoading/getLoginIsLoading.ts';
 
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -34,7 +37,9 @@ const SignInForm = memo(() => {
   const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const error = useSelector(getLoginError);
+  const isLoading = useSelector(getLoginIsLoading);
   const navigation = useNavigation<NavigationProp>();
+  const [showPassword, setShowPassword] = useState(false);
   const {theme} = useTheme();
 
   const validationSchema = yup.object({
@@ -74,85 +79,108 @@ const SignInForm = memo(() => {
   // };
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.title, {color: theme.primaryColor}]}>
-        {t('Sign in')}
-      </Text>
-      {error && (
-        <Text style={{color: 'red'}}>
-          {t('Incorrect password or username')}
-        </Text>
-      )}
-      <Controller
-        name="email"
-        control={control}
-        defaultValue=""
-        render={({field: {onChange, value}}) => (
-          <>
-            {errors.email && (
-              <Text style={{color: 'red'}}>{errors.email.message}</Text>
-            )}
-            <TextInput
-              style={[
-                styles.input,
-                {borderColor: theme.primaryColor, color: theme.primaryColor},
-              ]}
-              onChangeText={onChange}
-              placeholder={t('Email')}
-              placeholderTextColor={theme.invertedBackgroundColor}
-              value={value}
-              keyboardType="email-address"
-            />
-          </>
-        )}
-      />
-      <Controller
-        name="password"
-        control={control}
-        defaultValue=""
-        render={({field: {onChange, value}}) => (
-          <>
-            {errors.password && (
-              <Text style={{color: 'red'}}>{errors.password.message}</Text>
-            )}
-            <TextInput
-              style={[
-                styles.input,
-                {borderColor: theme.primaryColor, color: theme.primaryColor},
-              ]}
-              onChangeText={onChange}
-              placeholder={t('Password')}
-              placeholderTextColor={theme.primaryColor}
-              value={value}
-              keyboardType="visible-password"
-            />
-          </>
-        )}
-      />
-      {/*<TouchableOpacity*/}
-      {/*    onPress={onForgotPasswordClick}*/}
-      {/*    disabled={isLoading}*/}
-      {/*    style={{ backgroundColor: theme.invertedBackgroundColor , padding: 16, borderRadius: 4, marginVertical: 8 }}>*/}
-      {/*    <Text style={{ color: theme.invertedPrimaryColor, textAlign: 'center', fontSize: 18 }}>*/}
-      {/*        {t('Forgot password')}*/}
-      {/*    </Text>*/}
-      {/*</TouchableOpacity>*/}
-      <TouchableOpacity
-        onPress={handleSubmit(onSignInPress)}
-        style={{
-          backgroundColor: theme.invertedBackgroundColor,
-          padding: 16,
-          borderRadius: 4,
-          marginVertical: 8,
-        }}>
-        <Text
-          style={{
-            color: theme.backgroundColor,
-            textAlign: 'center',
-            fontSize: 18,
-          }}>
+      <View>
+        <Text style={[styles.title, {color: theme.primaryColor}]}>
           {t('Sign in')}
         </Text>
-      </TouchableOpacity>
+        {error && (
+          <Text style={styles.errorText}>
+            {t('Incorrect password or username')}
+          </Text>
+        )}
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          render={({field: {onChange, value}}) => (
+            <>
+              {errors.email && (
+                <Text style={styles.errorText}>{errors.email.message}</Text>
+              )}
+              <View
+                style={[
+                  styles.inputContainer,
+                  {borderColor: theme.primaryColor},
+                ]}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: theme.primaryColor,
+                      color: theme.primaryColor,
+                    },
+                  ]}
+                  onChangeText={onChange}
+                  placeholder={t('Email')}
+                  placeholderTextColor={theme.invertedBackgroundColor}
+                  value={value}
+                  keyboardType="email-address"
+                />
+              </View>
+            </>
+          )}
+        />
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          render={({field: {onChange, value}}) => (
+            <>
+              {errors.password && (
+                <Text style={styles.errorText}>{errors.password?.message}</Text>
+              )}
+              <View
+                style={[
+                  styles.inputContainer,
+                  {borderColor: theme.primaryColor},
+                ]}>
+                <TextInput
+                  style={[styles.input, {color: theme.primaryColor}]}
+                  placeholderTextColor={theme.invertedBackgroundColor}
+                  placeholder={t('Enter current password')}
+                  onChangeText={onChange}
+                  value={value}
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity
+                  style={styles.eyIcon}
+                  onPress={() => setShowPassword(!showPassword)}>
+                  <Icon
+                    name={showPassword ? 'eye-slash' : 'eye'}
+                    size={20}
+                    color={theme.primaryColor}
+                  />
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        />
+        {/*<PressableOpacity*/}
+        {/*  onPress={onForgotPasswordPress}*/}
+        {/*  disabled={isLoading}*/}
+        {/*  style={[*/}
+        {/*    styles.button,*/}
+        {/*    {backgroundColor: theme.invertedBackgroundColor},*/}
+        {/*  ]}>*/}
+        {/*  <Text*/}
+        {/*    style={[styles.buttonText, {color: theme.invertedPrimaryColor}]}>*/}
+        {/*    {t('Forgot password')}*/}
+        {/*  </Text>*/}
+        {/*</PressableOpacity>*/}
+
+        <PressableOpacity
+          onPress={handleSubmit(onSignInPress)}
+          disabled={isLoading}
+          style={[
+            styles.button,
+            {backgroundColor: theme.invertedBackgroundColor},
+          ]}>
+          <Text
+            style={[styles.buttonText, {color: theme.invertedPrimaryColor}]}>
+            {t('Sign in')}
+          </Text>
+        </PressableOpacity>
+      </View>
     </View>
   );
 });
@@ -161,19 +189,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
     textAlign: 'center',
   },
-  input: {
-    height: 40,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    padding: 8,
-    marginBottom: 8,
     borderRadius: 4,
+    marginBottom: 8,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    padding: 8,
+    borderRadius: 4,
+  },
+  button: {
+    padding: 16,
+    borderRadius: 4,
+    marginVertical: 8,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  errorText: {
+    color: 'red',
+    paddingBottom: 10,
+  },
+  eyIcon: {
+    padding: 10,
   },
 });
 

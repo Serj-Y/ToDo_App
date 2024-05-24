@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 20,
   },
   title: {
     fontSize: 24,
@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    paddingBottom: 10,
   },
 });
 export default ChangeUserNameForm;

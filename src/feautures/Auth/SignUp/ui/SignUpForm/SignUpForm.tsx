@@ -1,8 +1,14 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useAppDispatch} from '../../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import {useSelector} from 'react-redux';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../../../../app/providers/ThemeProvider';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -14,6 +20,7 @@ import {getSignUpError} from '../../model/selectors/getSignUpError/getSignUpErro
 import {getSignUpIsLoading} from '../../model/selectors/getSignUpIsLoading/getSignUpIsLoading.ts';
 import {signUp} from '../../model/services/signUp/signUp.ts';
 import PressableOpacity from '../../../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -34,6 +41,7 @@ const SignUpForm = memo(() => {
   const {theme} = useTheme();
   const isLoading = useSelector(getSignUpIsLoading);
   const error = useSelector(getSignUpError);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = yup.object({
     name: yup.string().required(t('This field is required')),
@@ -73,94 +81,125 @@ const SignUpForm = memo(() => {
   );
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.title, {color: theme.primaryColor}]}>
-        {t('Sign up')}
-      </Text>
-      {error && (
-        <Text style={styles.errorText}>{t('Something went wrong')}</Text>
-      )}
-      <Controller
-        name="name"
-        control={control}
-        defaultValue=""
-        render={({field: {onChange, value}}) => (
-          <>
-            {errors.name && (
-              <Text style={styles.errorText}>{errors.name.message}</Text>
-            )}
-            <TextInput
-              style={[
-                styles.input,
-                {borderColor: theme.primaryColor, color: theme.primaryColor},
-              ]}
-              onChangeText={onChange}
-              placeholder={t('Name')}
-              placeholderTextColor={theme.invertedBackgroundColor}
-              value={value}
-              keyboardType="email-address"
-            />
-          </>
-        )}
-      />
-      <Controller
-        name="email"
-        control={control}
-        defaultValue=""
-        render={({field: {onChange, value}}) => (
-          <>
-            {errors.email && (
-              <Text style={styles.errorText}>{errors.email.message}</Text>
-            )}
-            <TextInput
-              style={[
-                styles.input,
-                {borderColor: theme.primaryColor, color: theme.primaryColor},
-              ]}
-              onChangeText={onChange}
-              placeholder={t('Email')}
-              placeholderTextColor={theme.invertedBackgroundColor}
-              value={value}
-              keyboardType="email-address"
-            />
-          </>
-        )}
-      />
-      <Controller
-        name="password"
-        control={control}
-        defaultValue=""
-        render={({field: {onChange, value}}) => (
-          <>
-            {errors.password && (
-              <Text style={styles.errorText}>{errors.password.message}</Text>
-            )}
-            <TextInput
-              style={[
-                styles.input,
-                {borderColor: theme.primaryColor, color: theme.primaryColor},
-              ]}
-              onChangeText={onChange}
-              placeholder={t('Password')}
-              placeholderTextColor={theme.invertedBackgroundColor}
-              value={value}
-              keyboardType="visible-password"
-            />
-          </>
-        )}
-      />
-      <PressableOpacity
-        onPress={handleSubmit(onSubmit)}
-        disabled={isLoading}
-        style={[
-          styles.button,
-          {backgroundColor: theme.invertedBackgroundColor},
-        ]}>
-        <Text
-          disabled={isLoading}
-          style={[styles.buttonText, {color: theme.invertedPrimaryColor}]}>
+      <View>
+        <Text style={[styles.title, {color: theme.primaryColor}]}>
           {t('Sign up')}
         </Text>
-      </PressableOpacity>
+        {error && (
+          <Text style={styles.errorText}>{t('Something went wrong')}</Text>
+        )}
+        <Controller
+          name="name"
+          control={control}
+          defaultValue=""
+          render={({field: {onChange, value}}) => (
+            <>
+              {errors.name && (
+                <Text style={styles.errorText}>{errors.name.message}</Text>
+              )}
+              <View
+                style={[
+                  styles.inputContainer,
+                  {borderColor: theme.primaryColor},
+                ]}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: theme.primaryColor,
+                      color: theme.primaryColor,
+                    },
+                  ]}
+                  onChangeText={onChange}
+                  placeholder={t('Name')}
+                  placeholderTextColor={theme.invertedBackgroundColor}
+                  value={value}
+                  keyboardType="email-address"
+                />
+              </View>
+            </>
+          )}
+        />
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          render={({field: {onChange, value}}) => (
+            <>
+              {errors.email && (
+                <Text style={styles.errorText}>{errors.email.message}</Text>
+              )}
+              <View
+                style={[
+                  styles.inputContainer,
+                  {borderColor: theme.primaryColor},
+                ]}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: theme.primaryColor,
+                      color: theme.primaryColor,
+                    },
+                  ]}
+                  onChangeText={onChange}
+                  placeholder={t('Email')}
+                  placeholderTextColor={theme.invertedBackgroundColor}
+                  value={value}
+                  keyboardType="email-address"
+                />
+              </View>
+            </>
+          )}
+        />
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          render={({field: {onChange, value}}) => (
+            <>
+              {errors.password && (
+                <Text style={styles.errorText}>{errors.password?.message}</Text>
+              )}
+              <View
+                style={[
+                  styles.inputContainer,
+                  {borderColor: theme.primaryColor},
+                ]}>
+                <TextInput
+                  style={[styles.input, {color: theme.primaryColor}]}
+                  placeholderTextColor={theme.invertedBackgroundColor}
+                  placeholder={t('Enter current password')}
+                  onChangeText={onChange}
+                  value={value}
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity
+                  style={styles.eyIcon}
+                  onPress={() => setShowPassword(!showPassword)}>
+                  <Icon
+                    name={showPassword ? 'eye-slash' : 'eye'}
+                    size={20}
+                    color={theme.primaryColor}
+                  />
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        />
+        <PressableOpacity
+          onPress={handleSubmit(onSubmit)}
+          disabled={isLoading}
+          style={[
+            styles.button,
+            {backgroundColor: theme.invertedBackgroundColor},
+          ]}>
+          <Text
+            style={[styles.buttonText, {color: theme.invertedPrimaryColor}]}>
+            {t('Sign up')}
+          </Text>
+        </PressableOpacity>
+      </View>
     </View>
   );
 });
@@ -169,18 +208,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
     textAlign: 'center',
   },
-  input: {
-    height: 40,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    padding: 8,
+    borderRadius: 4,
     marginBottom: 8,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    padding: 8,
     borderRadius: 4,
   },
   button: {
@@ -194,6 +239,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    paddingBottom: 10,
+  },
+  eyIcon: {
+    padding: 10,
   },
 });
 

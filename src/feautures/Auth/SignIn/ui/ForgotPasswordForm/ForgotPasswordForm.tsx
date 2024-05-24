@@ -7,8 +7,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import {useAppDispatch} from '../../../../../shared/lib/hooks/useAppDispatch/useAppDispatch';
 import {useTranslation} from 'react-i18next';
@@ -17,6 +17,8 @@ import {useTheme} from '../../../../../app/providers/ThemeProvider';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../../../../app/types/route.ts';
 import {StackNavigationProp} from '@react-navigation/stack';
+import PressableOpacity from '../../../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface FormData {
   newPassword?: string;
@@ -24,11 +26,13 @@ interface FormData {
   emailCode?: string;
 }
 type NavigationProp = StackNavigationProp<RootStackParamList>;
+
 const ForgotPasswordForm = memo(() => {
   const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp>();
   const {theme} = useTheme();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isErrorSendToken, setIsErrorSendToken] = useState<boolean>(false);
   const [isErrorSendNewPassword, setIsErrorSendNewPassword] =
     useState<boolean>(false);
@@ -47,21 +51,26 @@ const ForgotPasswordForm = memo(() => {
   } = useForm<FormData>({
     resolver: useYupValidationResolver(validationSchema),
   });
+
   const onSubmit = useCallback(
     async (data: FormData) => {
+      setIsLoading(true);
       if (data.email && !data.emailCode) {
         setIsErrorSendToken(false);
         const result = await dispatch(
           forgotPasswordByEmail({email: data.email.toLowerCase()}),
         );
         if (result.meta.requestStatus === 'fulfilled') {
+          setIsLoading(false);
           setIsSendCode(true);
           setIsErrorSendToken(false);
         }
         if (result.meta.requestStatus === 'rejected') {
+          setIsLoading(false);
           setIsErrorSendToken(true);
         }
       } else if (data.emailCode && data.newPassword && data.email) {
+        setIsLoading(true);
         const result = await dispatch(
           sendForgotPasswordToken({
             email: data.email.toLowerCase(),
@@ -70,10 +79,12 @@ const ForgotPasswordForm = memo(() => {
           }),
         );
         if (result.meta.requestStatus === 'fulfilled') {
+          setIsLoading(false);
           navigation.navigate('SignIn');
           setIsErrorSendNewPassword(false);
         }
         if (result.meta.requestStatus === 'rejected') {
+          setIsLoading(false);
           setIsErrorSendNewPassword(true);
         }
       }
@@ -81,125 +92,182 @@ const ForgotPasswordForm = memo(() => {
     [dispatch, navigation],
   );
 
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t('Reset password')}</Text>
-      {!isSendCode && (
-        <Controller
-          name="email"
-          control={control}
-          defaultValue=""
-          render={({field: {onChange, value}}) => (
-            <>
-              {isErrorSendToken && (
-                <Text style={{color: 'red'}}>
-                  {t('Something went wrong, Or User not found')}
-                </Text>
-              )}
-              <TextInput
-                style={[styles.input, {borderColor: theme.primaryColor}]}
-                onChangeText={onChange}
-                placeholder={t('Email')}
-                placeholderTextColor={theme.invertedBackgroundColor}
-                value={value}
-                keyboardType="email-address"
-              />
-              {errors.email && (
-                <Text style={{color: 'red'}}>{errors.email.message}</Text>
-              )}
-            </>
-          )}
-        />
-      )}
-      {isSendCode && (
-        <>
-          <Text>{t('Check spam mailbox')}</Text>
-          {isErrorSendNewPassword && (
-            <Text style={{color: 'red'}}>{t('Something went wrong')}</Text>
-          )}
+    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+      <View>
+        <Text style={[styles.title, {color: theme.primaryColor}]}>
+          {t('Reset password')}
+        </Text>
+        {!isSendCode && (
           <Controller
-            name="emailCode"
+            name="email"
             control={control}
             defaultValue=""
             render={({field: {onChange, value}}) => (
               <>
-                <View style={{marginVertical: 16}}>
+                {isErrorSendToken && (
+                  <Text style={styles.errorText}>
+                    {t('Something went wrong, Or User not found')}
+                  </Text>
+                )}
+                {errors.email && (
+                  <Text style={styles.errorText}>{errors.email.message}</Text>
+                )}
+                <View
+                  style={[
+                    styles.inputContainer,
+                    {borderColor: theme.primaryColor},
+                  ]}>
                   <TextInput
-                    style={[styles.input, {borderColor: theme.primaryColor}]}
+                    style={[styles.input, {color: theme.primaryColor}]}
                     onChangeText={onChange}
+                    placeholder={t('Email')}
                     placeholderTextColor={theme.invertedBackgroundColor}
-                    placeholder={t('Enter code from email')}
                     value={value}
+                    keyboardType="email-address"
                   />
-                  {errors.emailCode && (
-                    <Text style={{color: 'red'}}>
-                      {errors.emailCode.message}
-                    </Text>
-                  )}
                 </View>
               </>
             )}
           />
-          <Controller
-            name="newPassword"
-            control={control}
-            defaultValue=""
-            render={({field: {onChange, value}}) => (
-              <>
-                <TextInput
-                  style={[styles.input, {borderColor: theme.primaryColor}]}
-                  onChangeText={onChange}
-                  placeholder={t('Enter new password')}
-                  placeholderTextColor={theme.invertedBackgroundColor}
-                  value={value}
-                  secureTextEntry
-                />
-                {errors.newPassword && (
-                  <Text style={{color: 'red'}}>
-                    {errors.newPassword.message}
-                  </Text>
-                )}
-              </>
+        )}
+        {isSendCode && (
+          <>
+            <Text style={[styles.text, {color: theme.primaryColor}]}>
+              {t('Check spam mailbox')}
+            </Text>
+            {isErrorSendNewPassword && (
+              <Text style={styles.errorText}>{t('Something went wrong')}</Text>
             )}
-          />
-        </>
-      )}
-      <TouchableOpacity
-        onPress={handleSubmit(onSubmit)}
-        style={{
-          backgroundColor: theme.invertedBackgroundColor,
-          padding: 16,
-          borderRadius: 4,
-        }}>
-        <Text
-          style={{
-            color: theme.invertedPrimaryColor,
-            textAlign: 'center',
-            fontSize: 18,
-          }}>
-          {isSendCode ? t('Send confirm code') : t('Send code to email')}
-        </Text>
-      </TouchableOpacity>
+            <Controller
+              name="emailCode"
+              control={control}
+              defaultValue=""
+              render={({field: {onChange, value}}) => (
+                <>
+                  {errors.emailCode && (
+                    <Text style={styles.errorText}>
+                      {errors.emailCode.message}
+                    </Text>
+                  )}
+                  <View
+                    style={[
+                      styles.inputContainer,
+                      {borderColor: theme.primaryColor},
+                    ]}>
+                    <TextInput
+                      style={[styles.input, {color: theme.primaryColor}]}
+                      onChangeText={onChange}
+                      placeholderTextColor={theme.invertedBackgroundColor}
+                      placeholder={t('Enter code from email')}
+                      value={value}
+                    />
+                  </View>
+                </>
+              )}
+            />
+            <Controller
+              name="newPassword"
+              control={control}
+              defaultValue=""
+              render={({field: {onChange, value}}) => (
+                <>
+                  {errors.newPassword && (
+                    <Text style={styles.errorText}>
+                      {errors.newPassword.message}
+                    </Text>
+                  )}
+                  <View
+                    style={[
+                      styles.inputContainer,
+                      {borderColor: theme.primaryColor},
+                    ]}>
+                    <TextInput
+                      style={[styles.input, {color: theme.primaryColor}]}
+                      onChangeText={onChange}
+                      placeholder={t('Enter new password')}
+                      placeholderTextColor={theme.invertedBackgroundColor}
+                      value={value}
+                      secureTextEntry={!showNewPassword}
+                    />
+                    <TouchableOpacity
+                      style={styles.icon}
+                      onPress={() => setShowNewPassword(!showNewPassword)}>
+                      <Icon
+                        name={showNewPassword ? 'eye-slash' : 'eye'}
+                        size={20}
+                        color={theme.primaryColor}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+            />
+          </>
+        )}
+        <PressableOpacity
+          onPress={handleSubmit(onSubmit)}
+          disabled={isLoading}
+          style={[
+            styles.button,
+            {backgroundColor: theme.invertedBackgroundColor},
+          ]}>
+          <Text
+            style={[styles.buttonText, {color: theme.invertedPrimaryColor}]}>
+            {isSendCode ? t('Send confirm code') : t('Send code to email')}
+          </Text>
+        </PressableOpacity>
+      </View>
     </View>
   );
 });
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
     textAlign: 'center',
   },
-  input: {
-    height: 40,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    padding: 8,
-    marginBottom: 8,
     borderRadius: 4,
+    marginBottom: 8,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    padding: 8,
+    borderRadius: 4,
+  },
+  icon: {
+    padding: 10,
+  },
+  button: {
+    padding: 16,
+    borderRadius: 4,
+    marginVertical: 8,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 18,
+    paddingBottom: 10,
+  },
+  errorText: {
+    color: 'red',
+    paddingBottom: 10,
   },
 });
 

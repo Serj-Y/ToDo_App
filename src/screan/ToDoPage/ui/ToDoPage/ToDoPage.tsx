@@ -3,12 +3,6 @@ import {initToDoPage} from '../../model/services/initToDoPage/initToDoPage';
 import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 
 import {View} from 'react-native';
-
-// const reducers: ReducersList = {
-//   toDo: toDoReducers,
-//   user: userReducer,
-// };
-
 const ToDoPage = () => {
   const dispatch = useAppDispatch();
   // const isLoading = useSelector(getToDoPageIsLoading);

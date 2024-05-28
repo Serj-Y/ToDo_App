@@ -3,7 +3,7 @@ import React from 'react';
 
 type PressableOpacityProps = {
   children: React.ReactNode;
-  onPress: () => void;
+  onPress?: () => void;
   onLongPress?: () => void;
   disabled?: boolean;
   style?: StyleProp<TouchableOpacity | any>;

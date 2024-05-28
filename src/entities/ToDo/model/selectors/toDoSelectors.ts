@@ -1,6 +1,6 @@
 import {StateSchema} from '../../../../app/providers/StoreProvider';
 
-export const getToDoPageIsLoading = (state: StateSchema) =>
+export const getToDoIsLoading = (state: StateSchema) =>
   state.toDo?.isLoading || false;
-export const getToDoPageError = (state: StateSchema) => state.toDo?.error;
-export const getToDoPageHasInited = (state: StateSchema) => state.toDo?._inited;
+export const getToDoError = (state: StateSchema) => state.toDo?.error;
+export const getToDoHasInited = (state: StateSchema) => state.toDo?._inited;

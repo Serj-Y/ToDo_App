@@ -95,6 +95,7 @@ export const CreateToDo = memo(() => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
+    paddingHorizontal: 10,
   },
   inputWrapper: {
     minWidth: '64%',

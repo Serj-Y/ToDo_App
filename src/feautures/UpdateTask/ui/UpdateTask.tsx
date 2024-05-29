@@ -1,14 +1,13 @@
 import {TaskStatus} from '../../../entities/Task/module/types/taskStatus.ts';
 import {Task} from '../../../entities/Task/module/types/task.ts';
-import {useTranslation} from 'react-i18next';
 import {Controller, useForm} from 'react-hook-form';
 import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import React, {useCallback} from 'react';
 import {updateTask} from '../model/services/updateTask.ts';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import {useTheme} from '../../../app/providers/ThemeProvider';
-import {Card} from '../../../shared/ui/Card/Card.tsx';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type UpdateTaskProps = {
   setIsEditTask: (value: boolean) => void;
@@ -32,7 +31,6 @@ export const UpdateTask = ({
   taskStatus,
   task,
 }: UpdateTaskProps) => {
-  const {t} = useTranslation();
   const {control, handleSubmit} = useForm<FormData>();
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
@@ -85,13 +83,22 @@ export const UpdateTask = ({
               // <TaskStatusSelect value={field.value} onChange={field.onChange} />
             )}
           />
-          <PressableOpacity
-            style={[styles.button, {backgroundColor: theme.backgroundColor}]}
-            onPress={handleSubmit(onSubmit)}>
-            <Text style={[styles.buttonText, {color: theme.primaryColor}]}>
-              conf
-            </Text>
-          </PressableOpacity>
+          <View style={styles.buttonWrapper}>
+            <PressableOpacity
+              style={[styles.button]}
+              onPress={handleSubmit(onSubmit)}>
+              <Icon
+                name="check"
+                style={[{color: theme.invertedPrimaryColor}]}
+                size={20}
+              />
+            </PressableOpacity>
+            <PressableOpacity
+              style={[styles.button]}
+              onPress={() => setIsEditTask(false)}>
+              <Icon name="close" style={[{color: 'red'}]} size={20} />
+            </PressableOpacity>
+          </View>
         </>
       </View>
     </View>
@@ -113,9 +120,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     fontSize: 16,
   },
+  buttonWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   button: {
     padding: 8,
     borderRadius: 4,
+    marginLeft: 10,
   },
   buttonText: {
     textAlign: 'center',

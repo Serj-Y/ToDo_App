@@ -2,7 +2,7 @@ import React from 'react';
 import {ToDo} from '../../model/types/toDo.ts';
 import {ToDoListItem} from '../ToDoListItem/ToDoListItem.tsx';
 import {sortByOrder} from '../../../../shared/lib/sortByOrder/sortByOrder.ts';
-import {ScrollView} from 'react-native';
+import {View} from 'react-native';
 
 interface ToDoListProps {
   toDos: ToDo[];
@@ -16,9 +16,9 @@ export const ToDoList = ({toDos, isLoading}: ToDoListProps) => {
 
   const sortedTodos = [...toDos].sort(sortByOrder);
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={{marginBottom: 75}}>
       {sortedTodos.length > 0 ? sortedTodos.map(renderToDo) : null}
       {/*{isLoading && getSkeletons()}*/}
-    </ScrollView>
+    </View>
   );
 };

@@ -1,11 +1,11 @@
-import {useTranslation} from 'react-i18next';
 import {Controller, useForm} from 'react-hook-form';
 import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import React, {useCallback} from 'react';
 import {updateToDoName} from '../model/services/updateToDoName.ts';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import {useTheme} from '../../../app/providers/ThemeProvider';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type CreateToDoListProps = {
   setIsEditToDoList: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,7 +20,6 @@ export const UpdateToDoList = ({
   setIsEditToDoList,
   currentToDoName,
 }: CreateToDoListProps) => {
-  const {t} = useTranslation();
   const {control, handleSubmit} = useForm<FormData>();
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
@@ -35,13 +34,13 @@ export const UpdateToDoList = ({
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <>
-          <Controller
-            name="name"
-            control={control}
-            defaultValue={currentToDoName}
-            rules={{minLength: 2, maxLength: 50}}
-            render={({field}) => (
+        <Controller
+          name="name"
+          control={control}
+          defaultValue={currentToDoName}
+          rules={{minLength: 2, maxLength: 50}}
+          render={({field}) => (
+            <>
               <TextInput
                 style={[
                   styles.input,
@@ -53,18 +52,26 @@ export const UpdateToDoList = ({
                 value={field.value}
                 onChangeText={field.onChange}
               />
-            )}
-          />
-        </>
-        <>
+              <View />
+            </>
+          )}
+        />
+        <View style={styles.buttonWrapper}>
           <PressableOpacity
-            style={[styles.button, {backgroundColor: theme.backgroundColor}]}
+            style={[styles.button]}
             onPress={handleSubmit(onSubmit)}>
-            <Text style={[styles.buttonText, {color: theme.primaryColor}]}>
-              {t('Change name')}
-            </Text>
+            <Icon
+              name="check"
+              style={[{color: theme.invertedPrimaryColor}]}
+              size={24}
+            />
           </PressableOpacity>
-        </>
+          <PressableOpacity
+            style={[styles.button]}
+            onPress={() => setIsEditToDoList(false)}>
+            <Icon name="close" style={[{color: 'red'}]} size={24} />
+          </PressableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -72,30 +79,29 @@ export const UpdateToDoList = ({
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
+    flex: 1,
+    paddingVertical: 2,
   },
   content: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 155, /// toDo temporal refactor !!!!!
   },
   input: {
     height: 40,
     padding: 8,
     borderRadius: 4,
     borderWidth: 1,
-    fontSize: 16,
+    fontSize: 20,
+  },
+  buttonWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   button: {
     padding: 8,
     borderRadius: 4,
-  },
-  buttonText: {
-    textAlign: 'center',
-    fontSize: 12,
-  },
-  text: {
-    fontSize: 20,
+    marginLeft: 10,
   },
 });

@@ -30,13 +30,11 @@ export const ToDoListItem = memo(({toDo}: ToDoListItemProps) => {
         <View style={styles.content}>
           {isEditToDoList ? (
             <>
-              <PressableOpacity onLongPress={setEditToDoListHandler}>
-                <UpdateToDoList
-                  setIsEditToDoList={setIsEditToDoList}
-                  toDoId={toDo._id}
-                  currentToDoName={toDo.name}
-                />
-              </PressableOpacity>
+              <UpdateToDoList
+                setIsEditToDoList={setIsEditToDoList}
+                toDoId={toDo._id}
+                currentToDoName={toDo.name}
+              />
               <View />
             </>
           ) : (
@@ -65,7 +63,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 15,
+    marginBottom: 14,
     alignItems: 'center',
     justifyContent: 'space-between',
   },

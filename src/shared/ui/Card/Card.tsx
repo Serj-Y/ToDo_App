@@ -22,7 +22,7 @@ export const Card = ({children, ...otherProps}: CardProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    padding: 9,
     borderRadius: 6,
     minWidth: '90%',
     shadowColor: 'black',
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
       height: 6,
     },
     shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 10,
+    shadowRadius: 6,
+    elevation: 6,
   },
 });

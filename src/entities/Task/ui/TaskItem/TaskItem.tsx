@@ -1,9 +1,5 @@
 import {ToDo} from '../../../ToDo/model/types/toDo.ts';
-import {TaskStatus} from '../../module/types/taskStatus.ts';
-import React, {useCallback, useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
-import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
-import {updateTask} from '../../../../feautures/UpdateTask/model/services/updateTask.ts';
+import React, {useState} from 'react';
 import {Task} from '../../module/types/task.ts';
 import {StyleSheet, Text, View} from 'react-native';
 import {UpdateTask} from '../../../../feautures/UpdateTask';
@@ -16,29 +12,29 @@ type TaskProps = {
   task: Task;
   toDo: ToDo;
 };
-interface FormData {
-  taskStatus: TaskStatus;
-}
+// interface FormData {
+//   taskStatus: TaskStatus;
+// }
 export const TaskItem = ({task, toDo}: TaskProps) => {
   const [isEditTask, setIsEditTask] = useState<boolean>(false);
   const setEditTaskHandler = () => setIsEditTask(prev => !prev);
-  const {control, handleSubmit} = useForm<FormData>();
+  // const {control, handleSubmit} = useForm<FormData>();
   const {theme} = useTheme();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const onSubmit = useCallback(
-    (data: FormData) => {
-      dispatch(
-        updateTask({
-          taskStatus: data.taskStatus,
-          taskId: task._id,
-          toDoId: toDo._id,
-          task,
-        }),
-      );
-    },
-    [dispatch, task, toDo._id],
-  );
+  // const onSubmit = useCallback(
+  //   (data: FormData) => {
+  //     dispatch(
+  //       updateTask({
+  //         taskStatus: data.taskStatus,
+  //         taskId: task._id,
+  //         toDoId: toDo._id,
+  //         task,
+  //       }),
+  //     );
+  //   },
+  //   [dispatch, task, toDo._id],
+  // );
   return (
     <View key={task._id} style={styles.container}>
       <Card>

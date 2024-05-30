@@ -3,11 +3,10 @@ import {ToDo} from '../../model/types/toDo.ts';
 import {Card} from '../../../../shared/ui/Card/Card.tsx';
 import {StyleSheet, Text, View} from 'react-native';
 import {UpdateToDoList} from '../../../../feautures/UpdateToDoList';
-import PressableOpacity from '../../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import {DeleteToDo} from '../../../../feautures/DeleteToDo';
 import {useTheme} from '../../../../app/providers/ThemeProvider';
 import {CreateTask} from '../../../../feautures/CreateTask';
-import {TaskItem} from '../../../Task/ui/TaskItem/TaskItem.tsx';
+import {TaskItem} from '../../../Task';
 import {Task} from '../../../Task/module/types/task.ts';
 import {sortByOrder} from '../../../../shared/lib/sortByOrder/sortByOrder.ts';
 
@@ -39,12 +38,11 @@ export const ToDoListItem = memo(({toDo}: ToDoListItemProps) => {
             </>
           ) : (
             <>
-              <PressableOpacity onLongPress={setEditToDoListHandler}>
-                <Text
-                  style={[styles.text, {color: theme.invertedPrimaryColor}]}>
-                  {toDo.name}
-                </Text>
-              </PressableOpacity>
+              <Text
+                onLongPress={setEditToDoListHandler}
+                style={[styles.text, {color: theme.invertedPrimaryColor}]}>
+                {toDo.name}
+              </Text>
               <DeleteToDo toDoIdForDelete={toDo._id} />
             </>
           )}
@@ -57,17 +55,19 @@ export const ToDoListItem = memo(({toDo}: ToDoListItemProps) => {
 });
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingVertical: 16,
     marginHorizontal: 10,
   },
   content: {
-    flex: 1,
     flexDirection: 'row',
-    marginBottom: 14,
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   text: {
+    maxWidth: '80%',
+    textAlign: 'left',
     fontSize: 20,
   },
 });

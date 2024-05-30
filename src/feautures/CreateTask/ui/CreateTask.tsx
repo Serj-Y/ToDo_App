@@ -5,9 +5,10 @@ import {Controller, useForm} from 'react-hook-form';
 import {useYupValidationResolver} from '../../../shared/lib/hooks/useYupValidationResolver/useYupValidationResolver.ts';
 import React, {useCallback} from 'react';
 import {createTask} from '../model/services/createTask.ts';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import {useTheme} from '../../../app/providers/ThemeProvider';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type CreateTaskProps = {
   toDoId: string;
@@ -62,51 +63,55 @@ export const CreateTask = ({toDoId}: CreateTaskProps) => {
         control={control}
         defaultValue=""
         render={({field}) => (
-          <>
-            {errors.taskName && (
-              <Text style={styles.errorText}>{errors.taskName?.message}</Text>
-            )}
-            <View
+          <View
+            style={[
+              styles.inputWrapper,
+              {borderColor: theme.invertedPrimaryColor},
+            ]}>
+            <TextInput
+              {...field}
               style={[
-                styles.inputWrapper,
-                {borderColor: theme.invertedPrimaryColor},
-              ]}>
-              <TextInput
-                {...field}
-                style={[
-                  styles.input,
-                  {
-                    color: theme.invertedPrimaryColor,
-                    borderColor: theme.invertedPrimaryColor,
-                  },
-                ]}
-                placeholderTextColor={theme.invertedPrimaryColor}
-                placeholder={t('Enter task name')}
-                onChangeText={value => field.onChange(value)}
-              />
-            </View>
-          </>
+                styles.input,
+                {
+                  color: theme.invertedPrimaryColor,
+                  borderColor: theme.invertedPrimaryColor,
+                },
+              ]}
+              placeholderTextColor={
+                errors.taskName ? 'red' : theme.invertedPrimaryColor
+              }
+              placeholder={
+                errors.taskName ? errors.taskName.message : t('Enter task name')
+              }
+              onChangeText={value => field.onChange(value)}
+            />
+          </View>
         )}
       />
       <PressableOpacity
         style={[styles.button, {backgroundColor: theme.backgroundColor}]}
         onPress={handleSubmit(onSubmit)}>
-        <Text style={[styles.buttonText, {color: theme.primaryColor}]}>
-          {t('Create Task')}
-        </Text>
+        <Icon
+          style={styles.buttonText}
+          name={'plus'}
+          color={theme.primaryColor}
+        />
       </PressableOpacity>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    flex: 1,
+    marginVertical: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   inputWrapper: {
-    minWidth: '64%',
     borderWidth: 1,
     borderRadius: 4,
-    marginBottom: 8,
+    width: '85%',
   },
   errorText: {
     color: 'red',
@@ -118,12 +123,11 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   button: {
-    padding: 16,
+    padding: 12,
     borderRadius: 4,
-    marginVertical: 8,
   },
   buttonText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 16,
   },
 });

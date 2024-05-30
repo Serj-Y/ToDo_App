@@ -28,7 +28,6 @@ export const UpdateTask = ({
   currentTaskName,
   setIsEditTask,
   toDoId,
-  taskStatus,
   task,
 }: UpdateTaskProps) => {
   const {control, handleSubmit} = useForm<FormData>();
@@ -74,15 +73,14 @@ export const UpdateTask = ({
           />
         </>
         <>
-          <Controller
-            name="taskStatus"
-            control={control}
-            defaultValue={taskStatus}
-            render={({field}) => (
-              <View />
-              // <TaskStatusSelect value={field.value} onChange={field.onChange} />
-            )}
-          />
+          {/*<Controller*/}
+          {/*  name="taskStatus"*/}
+          {/*  control={control}*/}
+          {/*  defaultValue={taskStatus}*/}
+          {/*  render={({field}) => (*/}
+          {/*    <TaskStatusSelect value={field.value} onChange={field.onChange} />*/}
+          {/*  )}*/}
+          {/*/>*/}
           <View style={styles.buttonWrapper}>
             <PressableOpacity
               style={[styles.button]}
@@ -119,6 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     fontSize: 16,
+    maxWidth: '75%',
   },
   buttonWrapper: {
     flexDirection: 'row',

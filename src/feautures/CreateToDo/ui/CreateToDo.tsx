@@ -4,12 +4,13 @@ import {useForm, Controller} from 'react-hook-form';
 // import ObjectId from 'bson-ObjectId';
 import * as yup from 'yup';
 import {createToDo} from '../model/services/createToDo';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import {useYupValidationResolver} from '../../../shared/lib/hooks/useYupValidationResolver/useYupValidationResolver.ts';
 import {useTheme} from '../../../app/providers/ThemeProvider';
 import {fetchToDo} from '../../../entities/ToDo/model/services/fetchToDo/fetchToDo.ts';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface FormData {
   name: string;
@@ -56,27 +57,26 @@ export const CreateToDo = memo(() => {
         control={control}
         defaultValue=""
         render={({field}) => (
-          <>
-            {errors.name && (
-              <Text style={styles.errorText}>{errors.name?.message}</Text>
-            )}
-            <View
-              style={[styles.inputWrapper, {borderColor: theme.primaryColor}]}>
-              <TextInput
-                {...field}
-                style={[
-                  styles.input,
-                  {
-                    color: theme.primaryColor,
-                    borderColor: theme.primaryColor,
-                  },
-                ]}
-                placeholderTextColor={theme.invertedBackgroundColor}
-                placeholder={t('Enter ToDo list name')}
-                onChangeText={value => field.onChange(value)}
-              />
-            </View>
-          </>
+          <View
+            style={[styles.inputWrapper, {borderColor: theme.primaryColor}]}>
+            <TextInput
+              {...field}
+              style={[
+                styles.input,
+                {
+                  color: theme.primaryColor,
+                  borderColor: theme.primaryColor,
+                },
+              ]}
+              placeholderTextColor={
+                errors.name ? 'red' : theme.invertedBackgroundColor
+              }
+              placeholder={
+                errors.name ? errors.name.message : t('Enter ToDo list name')
+              }
+              onChangeText={value => field.onChange(value)}
+            />
+          </View>
         )}
       />
       <PressableOpacity
@@ -85,9 +85,11 @@ export const CreateToDo = memo(() => {
           {backgroundColor: theme.invertedBackgroundColor},
         ]}
         onPress={handleSubmit(onSubmit)}>
-        <Text style={[styles.buttonText, {color: theme.invertedPrimaryColor}]}>
-          {t('Create To-Do')}
-        </Text>
+        <Icon
+          style={styles.buttonText}
+          name={'plus'}
+          color={theme.invertedPrimaryColor}
+        />
       </PressableOpacity>
     </View>
   );
@@ -96,12 +98,14 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
     paddingHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   inputWrapper: {
-    minWidth: '64%',
     borderWidth: 1,
     borderRadius: 4,
-    marginBottom: 8,
+    width: '85%',
   },
   errorText: {
     color: 'red',
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   button: {
-    padding: 16,
+    padding: 12,
     borderRadius: 4,
     marginVertical: 8,
   },

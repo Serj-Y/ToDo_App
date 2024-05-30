@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     fontSize: 20,
+    width: '70%',
   },
   buttonWrapper: {
     flexDirection: 'row',

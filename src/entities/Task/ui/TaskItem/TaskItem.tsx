@@ -1,52 +1,58 @@
-import {ToDo} from '../../../ToDo/model/types/toDo.ts';
-import React, {useState} from 'react';
-import {Task} from '../../module/types/task.ts';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {Controller, useForm} from 'react-hook-form';
+import {Task} from '../../module/types/task';
+import {ToDo} from '../../../ToDo/model/types/toDo';
+import {TaskStatus} from '../../module/types/taskStatus';
+import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch';
+import {updateTask} from '../../../../feautures/UpdateTask/model/services/updateTask';
 import {UpdateTask} from '../../../../feautures/UpdateTask';
 import {DeleteTask} from '../../../../feautures/DeleteTask';
-import PressableOpacity from '../../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import {useTheme} from '../../../../app/providers/ThemeProvider';
-import {Card} from '../../../../shared/ui/Card/Card.tsx';
+import {Card} from '../../../../shared/ui/Card/Card';
+import {TaskStatusSelect} from '../TaskStatusSelect/TaskStatusSelect';
 
 type TaskProps = {
   task: Task;
   toDo: ToDo;
 };
-// interface FormData {
-//   taskStatus: TaskStatus;
-// }
+
+interface FormData {
+  taskStatus: TaskStatus;
+}
+
 export const TaskItem = ({task, toDo}: TaskProps) => {
   const [isEditTask, setIsEditTask] = useState<boolean>(false);
   const setEditTaskHandler = () => setIsEditTask(prev => !prev);
-  // const {control, handleSubmit} = useForm<FormData>();
+  const {control, handleSubmit, setValue} = useForm<FormData>();
   const {theme} = useTheme();
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-  // const onSubmit = useCallback(
-  //   (data: FormData) => {
-  //     dispatch(
-  //       updateTask({
-  //         taskStatus: data.taskStatus,
-  //         taskId: task._id,
-  //         toDoId: toDo._id,
-  //         task,
-  //       }),
-  //     );
-  //   },
-  //   [dispatch, task, toDo._id],
-  // );
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      dispatch(
+        updateTask({
+          taskStatus: data.taskStatus,
+          taskId: task._id,
+          toDoId: toDo._id,
+          task,
+        }),
+      );
+    },
+    [dispatch, task, toDo._id],
+  );
+
   return (
     <View key={task._id} style={styles.container}>
       <Card>
-        <View style={styles.content}>
+        <View style={[styles.content]}>
           {!isEditTask && (
-            <PressableOpacity onLongPress={setEditTaskHandler}>
-              <Text style={[styles.text, {color: theme.invertedPrimaryColor}]}>
-                {task.name}
-              </Text>
-            </PressableOpacity>
+            <Text
+              onLongPress={setEditTaskHandler}
+              style={[styles.text, {color: theme.invertedPrimaryColor}]}>
+              {task.name}
+            </Text>
           )}
-
           {isEditTask ? (
             <UpdateTask
               currentTaskName={task.name}
@@ -57,20 +63,23 @@ export const TaskItem = ({task, toDo}: TaskProps) => {
               task={task}
             />
           ) : (
-            <View>
-              {/*<Controller*/}
-              {/*  name="taskStatus"*/}
-              {/*  control={control}*/}
-              {/*  defaultValue={task.status}*/}
-              {/*  render={({field}) => (*/}
-              {/*    <View>*/}
-              {/*      <TaskStatusSelect*/}
-              {/*        value={task.status}*/}
-              {/*        onChange={field.onChange}*/}
-              {/*      />*/}
-              {/*    </View>*/}
-              {/*  )}*/}
-              {/*/>*/}
+            <View style={styles.content}>
+              <Controller
+                name="taskStatus"
+                control={control}
+                defaultValue={task.status}
+                render={() => (
+                  <View>
+                    <TaskStatusSelect
+                      value={task.status}
+                      onChange={value => {
+                        setValue('taskStatus', value);
+                        handleSubmit(onSubmit)();
+                      }}
+                    />
+                  </View>
+                )}
+              />
               <DeleteTask taskIdForDelete={task._id} toDoListId={toDo._id} />
             </View>
           )}
@@ -79,9 +88,9 @@ export const TaskItem = ({task, toDo}: TaskProps) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginBottom: 20,
   },
   content: {
@@ -89,33 +98,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 4,
-    marginBottom: 8,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    padding: 8,
-    borderRadius: 4,
-  },
-  button: {
-    padding: 16,
-    borderRadius: 4,
-    marginVertical: 8,
-  },
-  buttonText: {
-    textAlign: 'center',
-    fontSize: 18,
-  },
-  errorText: {
-    color: 'red',
-    paddingBottom: 10,
-  },
   text: {
+    maxWidth: '45%',
+    textAlign: 'auto',
     fontSize: 16,
   },
 });

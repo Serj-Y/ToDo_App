@@ -1,8 +1,8 @@
 import React from 'react';
-import {ToDo} from '../../model/types/toDo.ts';
-import {ToDoListItem} from '../ToDoListItem/ToDoListItem.tsx';
-import {sortByOrder} from '../../../../shared/lib/sortByOrder/sortByOrder.ts';
+import {ToDo} from '../../model/types/toDo';
 import {View} from 'react-native';
+import {sortByOrder} from '../../../../shared/lib/sortByOrder/sortByOrder';
+import {ToDoListItem} from '../ToDoListItem/ToDoListItem.tsx';
 
 interface ToDoListProps {
   toDos: ToDo[];
@@ -19,6 +19,11 @@ export const ToDoList = ({toDos, isLoading}: ToDoListProps) => {
     <View style={{marginBottom: 75}}>
       {sortedTodos.length > 0 ? sortedTodos.map(renderToDo) : null}
       {/*{isLoading && getSkeletons()}*/}
+
+      {/*<DraggableToDoList*/}
+      {/*  dragItems={sortedItems}*/}
+      {/*  updateRequest={changeToDoOrder}*/}
+      {/*/>*/}
     </View>
   );
 };

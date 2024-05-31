@@ -25,6 +25,7 @@ export const changeTaskOrder = createAsyncThunk<
     if (!response.data) {
       rejectWithValue(response.statusText);
     }
+    console.log(forSwap);
     return response.data;
   } catch (e: any) {
     if (!e) {

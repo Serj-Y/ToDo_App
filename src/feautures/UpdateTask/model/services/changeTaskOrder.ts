@@ -6,7 +6,7 @@ import {Task} from '../../../../entities/Task/module/types/task.ts';
 interface ChangeTaskOrderProps {
   firstId: string;
   secondId: string;
-  toDoId?: string;
+  toDoId: string;
   replace?: boolean;
 }
 
@@ -19,6 +19,7 @@ export const changeTaskOrder = createAsyncThunk<
   const forSwap = {
     firstTaskId: taskSwap.firstId,
     secondTaskId: taskSwap.secondId,
+    toDoId: taskSwap.toDoId,
   };
   try {
     const response = await extra.api.put<Task>('task/swap-orders', forSwap);

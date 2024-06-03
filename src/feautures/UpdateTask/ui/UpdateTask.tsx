@@ -56,7 +56,7 @@ export const UpdateTask = ({
             name="taskName"
             control={control}
             defaultValue={currentTaskName}
-            rules={{minLength: 2, maxLength: 50}}
+            rules={{minLength: 1}}
             render={({field}) => (
               <TextInput
                 style={[

@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
 import {Task} from '../../module/types/task';
@@ -21,7 +21,7 @@ interface FormData {
   taskStatus: TaskStatus;
 }
 
-export const TaskItem = ({task, toDo}: TaskProps) => {
+export const TaskItem = memo(({task, toDo}: TaskProps) => {
   const [isEditTask, setIsEditTask] = useState<boolean>(false);
   const setEditTaskHandler = () => setIsEditTask(prev => !prev);
   const {control, handleSubmit, setValue} = useForm<FormData>();
@@ -87,7 +87,7 @@ export const TaskItem = ({task, toDo}: TaskProps) => {
       </Card>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

@@ -197,6 +197,19 @@ const toDoSlice = createSlice({
       .addCase(changeToDoOrder.pending, (state, action) => {
         state.error = undefined;
         state.isLoading = true;
+        const {firstId, secondId} = action.meta.arg;
+        const firstToDo = state.entities[firstId];
+        const secondToDo = state.entities[secondId];
+        if (firstToDo && secondToDo) {
+          const orderFirst = firstToDo.order;
+          const orderSecond = secondToDo.order;
+          if (orderFirst && orderSecond) {
+            toDoAdapter.updateMany(state, [
+              {id: firstToDo._id, changes: {order: secondToDo.order}},
+              {id: secondToDo._id, changes: {order: firstToDo.order}},
+            ]);
+          }
+        }
 
         if (action.meta.arg.replace) {
           toDoAdapter.removeAll(state);
@@ -277,9 +290,32 @@ const toDoSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      .addCase(changeTaskOrder.pending, state => {
+      .addCase(changeTaskOrder.pending, (state, action) => {
         state.isLoading = true;
         state.error = undefined;
+        const {firstId, secondId, toDoId} = action.meta.arg;
+        const toDo = toDoAdapter.getSelectors().selectById(state, toDoId);
+        if (toDo) {
+          const {tasks} = toDo;
+          const firstTask = tasks.find(task => task._id === firstId);
+          const secondTask = tasks.find(task => task._id === secondId);
+
+          if (firstTask && secondTask) {
+            const updatedTasks = tasks.map(task => {
+              if (task._id === firstId) {
+                return {...task, order: secondTask.order};
+              }
+              if (task._id === secondId) {
+                return {...task, order: firstTask.order};
+              }
+              return task;
+            });
+            toDoAdapter.updateOne(state, {
+              id: toDoId,
+              changes: {tasks: updatedTasks},
+            });
+          }
+        }
       })
       .addCase(changeTaskOrder.fulfilled, (state, action) => {
         state.isLoading = false;

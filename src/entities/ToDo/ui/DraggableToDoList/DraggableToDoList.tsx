@@ -1,62 +1,53 @@
-import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import DragList, {DragListRenderItemInfo} from 'react-native-draglist';
-import {ToDo} from '../../model/types/toDo';
-import {ToDoListItem} from '../ToDoListItem/ToDoListItem';
-import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch';
+import {ToDo} from '../../model/types/toDo.ts';
+import React, {memo, useCallback} from 'react';
+import {TouchableOpacity} from 'react-native';
+import DraggableFlatList, {
+  RenderItemParams,
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
+import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
+import {ToDoListItem} from '../ToDoListItem/ToDoListItem.tsx';
+import {changeToDoOrder} from '../../../../feautures/UpdateToDoList/model/services/changeToDoOrder.ts';
 
-interface DraggableToDoListProps {
+interface Interface {
   dragItems: ToDo[];
-  updateRequest: any;
-  toDoId?: string;
 }
 
-export const DraggableToDoList = ({
-  dragItems,
-  toDoId,
-  updateRequest,
-}: DraggableToDoListProps) => {
+export const DraggableToDoList = memo(({dragItems}: Interface) => {
   const dispatch = useAppDispatch();
+  const renderItem = useCallback(
+    ({item, drag, isActive}: RenderItemParams<ToDo>) => {
+      return (
+        <ScaleDecorator activeScale={1.04}>
+          <TouchableOpacity onLongPress={drag} disabled={isActive}>
+            <ToDoListItem toDo={item} />
+          </TouchableOpacity>
+        </ScaleDecorator>
+      );
+    },
+    [],
+  );
 
-  function keyExtractor(item: ToDo) {
-    return item._id;
-  }
-
-  function renderItem(info: DragListRenderItemInfo<ToDo>) {
-    const {item, onDragStart, onDragEnd} = info;
-
-    return (
-      <TouchableOpacity
-        key={item._id}
-        onLongPress={onDragStart}
-        onPressOut={onDragEnd}>
-        <ToDoListItem toDo={item} />
-      </TouchableOpacity>
-    );
-  }
-
-  async function onReordered(fromIndex: number, toIndex: number) {
-    const firstId = dragItems[fromIndex]._id;
-    const secondId = dragItems[toIndex]._id;
-    if (firstId && secondId) {
-      dispatch(updateRequest({firstId, secondId, toDoId}));
-    }
-  }
+  const onReordered = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      const firstId = dragItems[fromIndex]._id;
+      const secondId = dragItems[toIndex]._id;
+      if (firstId && secondId && firstId !== secondId) {
+        dispatch(changeToDoOrder({firstId, secondId}));
+      }
+    },
+    [dispatch, dragItems],
+  );
 
   return (
-    <View>
-      <DragList
-        contentContainerStyle={{zIndex: 1}}
-        data={dragItems}
-        keyExtractor={keyExtractor}
-        onReordered={onReordered}
-        renderItem={renderItem}
-        pointerEvents={'auto'}
-        scrollEnabled={true}
-        scrollToOverflowEnabled={false}
-        overScrollMode={'never'}
-        aria-hidden
-      />
-    </View>
+    <DraggableFlatList
+      scrollEnabled={true}
+      data={dragItems}
+      onDragEnd={({from, to}) => {
+        onReordered(from, to);
+      }}
+      keyExtractor={item => item._id}
+      renderItem={renderItem}
+    />
   );
-};
+});

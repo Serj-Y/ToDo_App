@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginLeft: 16,
   },
   buttonsContainer: {
     flexDirection: 'row',

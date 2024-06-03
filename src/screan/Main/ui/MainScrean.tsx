@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useTheme} from '../../../app/providers/ThemeProvider';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Header} from '../../../widgets/Header';
 import {ToDoList} from '../../../entities/ToDo';
 import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
@@ -44,14 +44,14 @@ const MainScreen: React.FC = () => {
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <Header />
-      <View style={styles.content}>
-        {userInited && (
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <CreateToDo />
+      {userInited && (
+        <>
+          <CreateToDo />
+          <View style={styles.content}>
             {inited && <ToDoList toDos={toDo} />}
-          </ScrollView>
-        )}
-      </View>
+          </View>
+        </>
+      )}
     </View>
   );
 };

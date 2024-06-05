@@ -1,3 +1,3 @@
-import {DeleteTask} from './ui/DeleteTask.tsx';
+import {deleteTask} from './model/services/deleteTask.ts';
 
-export {DeleteTask};
+export {deleteTask};

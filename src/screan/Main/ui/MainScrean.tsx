@@ -4,7 +4,6 @@ import {StyleSheet, View} from 'react-native';
 import {Header} from '../../../widgets/Header';
 import {ToDoList} from '../../../entities/ToDo';
 import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
-import {initToDoPage} from '../../ToDoPage/model/services/initToDoPage/initToDoPage.ts';
 import {useSelector} from 'react-redux';
 import {
   getToDoError,
@@ -16,6 +15,7 @@ import {CreateToDo} from '../../../feautures/CreateToDo';
 import {getUserInited} from '../../../entities/User';
 import {ACCESS_TOKEN} from '../../../shared/consts/localStorage.ts';
 import {initUser} from '../../../entities/User/model/services/initUser.ts';
+import {initToDo} from '../model/initToDo/initToDo.ts';
 
 const MainScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -38,7 +38,7 @@ const MainScreen: React.FC = () => {
   // }, [dispatch, isFocus]);
 
   useEffect(() => {
-    dispatch(initToDoPage());
+    dispatch(initToDo());
   });
   const {theme} = useTheme();
   return (

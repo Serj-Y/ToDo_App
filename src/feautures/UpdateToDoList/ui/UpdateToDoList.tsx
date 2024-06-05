@@ -12,9 +12,11 @@ type CreateToDoListProps = {
   toDoId: string;
   currentToDoName: string;
 };
+
 interface FormData {
   name: string;
 }
+
 export const UpdateToDoList = ({
   toDoId,
   setIsEditToDoList,
@@ -31,6 +33,7 @@ export const UpdateToDoList = ({
     },
     [dispatch, setIsEditToDoList, toDoId],
   );
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -38,38 +41,34 @@ export const UpdateToDoList = ({
           name="name"
           control={control}
           defaultValue={currentToDoName}
-          rules={{minLength: 2, maxLength: 50}}
           render={({field}) => (
-            <>
-              <TextInput
-                style={[
-                  styles.input,
-                  {
-                    color: theme.invertedPrimaryColor,
-                    borderColor: theme.invertedPrimaryColor,
-                  },
-                ]}
-                value={field.value}
-                onChangeText={field.onChange}
-              />
-              <View />
-            </>
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  color: theme.invertedPrimaryColor,
+                  borderColor: theme.invertedPrimaryColor,
+                },
+              ]}
+              value={field.value}
+              onChangeText={field.onChange}
+            />
           )}
         />
         <View style={styles.buttonWrapper}>
           <PressableOpacity
-            style={[styles.button]}
+            style={styles.button}
             onPress={handleSubmit(onSubmit)}>
             <Icon
               name="check"
-              style={[{color: theme.invertedPrimaryColor}]}
+              style={{color: theme.invertedPrimaryColor}}
               size={24}
             />
           </PressableOpacity>
           <PressableOpacity
-            style={[styles.button]}
+            style={styles.button}
             onPress={() => setIsEditToDoList(false)}>
-            <Icon name="close" style={[{color: 'red'}]} size={24} />
+            <Icon name="close" style={{color: 'red'}} size={24} />
           </PressableOpacity>
         </View>
       </View>
@@ -93,16 +92,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     fontSize: 20,
-    width: '70%',
+    flexBasis: '70%',
   },
   buttonWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   button: {
     padding: 8,
-    borderRadius: 4,
     marginLeft: 10,
   },
 });

@@ -1,7 +1,6 @@
 import {useTranslation} from 'react-i18next';
 import React, {memo, useCallback} from 'react';
 import {useForm, Controller} from 'react-hook-form';
-// import ObjectId from 'bson-ObjectId';
 import * as yup from 'yup';
 import {createToDo} from '../model/services/createToDo';
 import {StyleSheet, TextInput, View} from 'react-native';
@@ -11,6 +10,8 @@ import {useYupValidationResolver} from '../../../shared/lib/hooks/useYupValidati
 import {useTheme} from '../../../app/providers/ThemeProvider';
 import {fetchToDo} from '../../../entities/ToDo/model/services/fetchToDo/fetchToDo.ts';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useNetworkAvailability} from '../../../shared/lib/hooks/useNetworkAvailability/useNetworkAvailability.ts';
+import ObjectID from 'bson-objectid';
 
 interface FormData {
   name: string;
@@ -19,6 +20,7 @@ export const CreateToDo = memo(() => {
   const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
+  const isConnected = useNetworkAvailability();
 
   const validationSchema = yup.object({
     name: yup.string().required(t('This field is required')),
@@ -35,11 +37,10 @@ export const CreateToDo = memo(() => {
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      if (false) {
-        //isOffline
-        // const offlineId = new ObjectId();
-        // dispatch(createToDo({_id: offlineId.toString(), name: data.name}));
-        // reset();
+      if (!isConnected) {
+        const offlineId = new ObjectID();
+        dispatch(createToDo({_id: offlineId.toString(), name: data.name}));
+        reset();
       } else {
         dispatch(createToDo(data)).then(() => {
           dispatch(fetchToDo({})); // toDo refactor this part temporal use
@@ -47,9 +48,8 @@ export const CreateToDo = memo(() => {
         reset();
       }
     },
-    [dispatch, reset],
+    [dispatch, isConnected, reset],
   );
-
   return (
     <View style={styles.container}>
       <Controller

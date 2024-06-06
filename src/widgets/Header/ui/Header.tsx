@@ -9,6 +9,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../app/types/route.ts';
 import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {NetworkStatus} from '../../../shared/lib/hooks/useNetworkAvailability/NetWorkStatus.tsx';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 const Header: React.FC = () => {
@@ -36,6 +37,7 @@ const Header: React.FC = () => {
       <Text style={[styles.appName, {color: theme.invertedPrimaryColor}]}>
         {'ToDo'}
       </Text>
+      <NetworkStatus />
       <View style={styles.buttonsContainer}>
         {!authData && (
           <>
@@ -90,7 +92,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
-    borderBottomWidth: 1,
   },
   appName: {
     fontSize: 20,

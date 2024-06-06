@@ -9,6 +9,8 @@ import {StyleSheet, TextInput, View} from 'react-native';
 import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
 import {useTheme} from '../../../app/providers/ThemeProvider';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ObjectID from 'bson-objectid';
+import {useNetworkAvailability} from '../../../shared/lib/hooks/useNetworkAvailability/useNetworkAvailability.ts';
 
 type CreateTaskProps = {
   toDoId: string;
@@ -21,6 +23,7 @@ export const CreateTask = ({toDoId}: CreateTaskProps) => {
   const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
+  const isConnected = useNetworkAvailability();
 
   const validationSchema = yup.object({
     taskName: yup.string().required(t('This field is required')),
@@ -37,23 +40,22 @@ export const CreateTask = ({toDoId}: CreateTaskProps) => {
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      if (false) {
-        // isOfline
-        // const offlineId = new ObjectId();
-        // dispatch(
-        //   createTask({
-        //     taskName: data.taskName,
-        //     toDoId,
-        //     taskId: offlineId.toString(),
-        //   }),
-        // );
-        // reset();
+      if (!isConnected) {
+        const offlineId = new ObjectID();
+        dispatch(
+          createTask({
+            taskName: data.taskName,
+            toDoId,
+            taskId: offlineId.toString(),
+          }),
+        );
+        reset();
       } else {
         dispatch(createTask({taskName: data.taskName, toDoId}));
         reset();
       }
     },
-    [dispatch, reset, toDoId],
+    [dispatch, isConnected, reset, toDoId],
   );
 
   return (

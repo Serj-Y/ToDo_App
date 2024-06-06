@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useTheme} from '../../../app/providers/ThemeProvider';
-import {StyleSheet, View} from 'react-native';
+import {AppState, StyleSheet, View} from 'react-native';
 import {Header} from '../../../widgets/Header';
 import {ToDoList} from '../../../entities/ToDo';
 import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
@@ -16,6 +16,7 @@ import {getUserInited} from '../../../entities/User';
 import {ACCESS_TOKEN} from '../../../shared/consts/localStorage.ts';
 import {initUser} from '../../../entities/User/model/services/initUser.ts';
 import {initToDo} from '../model/initToDo/initToDo.ts';
+import {fetchToDo} from '../../../entities/ToDo/model/services/fetchToDo/fetchToDo.ts';
 
 const MainScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,23 +25,25 @@ const MainScreen: React.FC = () => {
   const inited = useSelector(getToDoHasInited);
   const toDo = useSelector(getToDo.selectAll);
   const userInited = useSelector(getUserInited);
-
+  const {theme} = useTheme();
+  const isConnected = AppState.currentState === 'active';
   useEffect(() => {
     if (!ACCESS_TOKEN) {
       dispatch(initUser());
     }
   }, [dispatch]);
 
-  // useEffect(() => {
-  //     if (isFocus) {
-  //         setTimeout(() => { dispatch(fetchToDo({})); }, 2000);
-  //     }
-  // }, [dispatch, isFocus]);
+  useEffect(() => {
+    if (isConnected) {
+      setTimeout(() => {
+        dispatch(fetchToDo({}));
+      }, 2000);
+    }
+  }, [dispatch, isConnected]);
 
   useEffect(() => {
     dispatch(initToDo());
   });
-  const {theme} = useTheme();
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <Header />

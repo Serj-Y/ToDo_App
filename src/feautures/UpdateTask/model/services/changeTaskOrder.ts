@@ -1,5 +1,4 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {toDoActions} from '../../../../entities/ToDo/model/slice/toDoSlice';
 import {ThunkConfig} from '../../../../app/providers/StoreProvider';
 import {Task} from '../../../../entities/Task/module/types/task.ts';
 
@@ -26,12 +25,8 @@ export const changeTaskOrder = createAsyncThunk<
     if (!response.data) {
       rejectWithValue(response.statusText);
     }
-    console.log(forSwap);
     return response.data;
   } catch (e: any) {
-    if (!e) {
-      dispatch(toDoActions.changeTaskOrder(taskSwap));
-    }
     console.log(e);
     return rejectWithValue('error');
   }

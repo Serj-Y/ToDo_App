@@ -12,6 +12,7 @@ import {createTask} from '../../../../feautures/CreateTask/model/services/create
 import {updateTask} from '../../../../feautures/UpdateTask/model/services/updateTask.ts';
 import {changeTaskOrder} from '../../../../feautures/UpdateTask/model/services/changeTaskOrder.ts';
 import {deleteTask} from '../../../../feautures/DeleteTask/model/services/deleteTask.ts';
+import NetInfo from '@react-native-community/netinfo';
 
 const toDoAdapter = createEntityAdapter<ToDo>({
   selectId: toDo => toDo._id,
@@ -53,21 +54,21 @@ const toDoSlice = createSlice({
     deleteToDo: (state, action) => {
       toDoAdapter.removeOne(state, action.payload.todoId);
     },
-    changeToDoOrder: (state, action) => {
-      const {firstId, secondId} = action.payload;
-      const firstToDo = state.entities[firstId];
-      const secondToDo = state.entities[secondId];
-      if (firstToDo && secondToDo) {
-        const orderFirst = firstToDo.order;
-        const orderSecond = secondToDo.order;
-        if (orderFirst && orderSecond) {
-          toDoAdapter.updateMany(state, [
-            {id: firstToDo._id, changes: {order: secondToDo.order}},
-            {id: secondToDo._id, changes: {order: firstToDo.order}},
-          ]);
-        }
-      }
-    },
+    // changeToDoOrder: (state, action) => {
+    //   const {firstId, secondId} = action.payload;
+    //   const firstToDo = state.entities[firstId];
+    //   const secondToDo = state.entities[secondId];
+    //   if (firstToDo && secondToDo) {
+    //     const orderFirst = firstToDo.order;
+    //     const orderSecond = secondToDo.order;
+    //     if (orderFirst && orderSecond) {
+    //       toDoAdapter.updateMany(state, [
+    //         {id: firstToDo._id, changes: {order: secondToDo.order}},
+    //         {id: secondToDo._id, changes: {order: firstToDo.order}},
+    //       ]);
+    //     }
+    //   }
+    // },
     createTask: (state, action) => {
       const {toDoId, taskName, taskId} = action.payload;
       const toDo = state.entities[toDoId];
@@ -109,31 +110,30 @@ const toDoSlice = createSlice({
         toDoAdapter.updateOne(state, {id: todoId, changes: updatedTodo});
       }
     },
-    changeTaskOrder: (state, action) => {
-      const {firstId, secondId, toDoId} = action.payload;
-      const toDo = toDoAdapter.getSelectors().selectById(state, toDoId);
-      if (toDo) {
-        const {tasks} = toDo;
-        const firstTask = tasks.find(task => task._id === firstId);
-        const secondTask = tasks.find(task => task._id === secondId);
-
-        if (firstTask && secondTask) {
-          const updatedTasks = tasks.map(task => {
-            if (task._id === firstId) {
-              return {...task, order: secondTask.order};
-            }
-            if (task._id === secondId) {
-              return {...task, order: firstTask.order};
-            }
-            return task;
-          });
-          toDoAdapter.updateOne(state, {
-            id: toDoId,
-            changes: {tasks: updatedTasks},
-          });
-        }
-      }
-    },
+    //   changeTaskOrder: (state, action) => {
+    //     const {firstId, secondId, toDoId} = action.payload;
+    //     const toDo = toDoAdapter.getSelectors().selectById(state, toDoId);
+    //     if (toDo) {
+    //       const {tasks} = toDo;
+    //       const firstTask = tasks.find(task => task._id === firstId);
+    //       const secondTask = tasks.find(task => task._id === secondId);
+    //       if (firstTask && secondTask) {
+    //         const updatedTasks = tasks.map(task => {
+    //           if (task._id === firstId) {
+    //             return {...task, order: secondTask.order};
+    //           }
+    //           if (task._id === secondId) {
+    //             return {...task, order: firstTask.order};
+    //           }
+    //           return task;
+    //         });
+    //         toDoAdapter.updateOne(state, {
+    //           id: toDoId,
+    //           changes: {tasks: updatedTasks},
+    //         });
+    //       }
+    //     }
+    //   },
   },
   extraReducers: builder => {
     builder

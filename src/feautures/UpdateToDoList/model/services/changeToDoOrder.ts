@@ -1,7 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {ToDo} from '../../../../entities/ToDo/model/types/toDo.ts';
 import {ThunkConfig} from '../../../../app/providers/StoreProvider';
-import {toDoActions} from '../../../../entities/ToDo/model/slice/toDoSlice.ts';
 
 interface UpdateToDoOrderProps {
   firstId: string;
@@ -26,10 +25,6 @@ export const changeToDoOrder = createAsyncThunk<
     }
     return response.data;
   } catch (e: any) {
-    if (!e) {
-      dispatch(toDoActions.changeToDoOrder(toDoSwap));
-      console.log(e);
-    }
     console.log(e);
     return rejectWithValue('error');
   }

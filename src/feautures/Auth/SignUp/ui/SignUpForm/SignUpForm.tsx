@@ -67,7 +67,7 @@ const SignUpForm = memo(() => {
     async (data: FormData) => {
       const result = await dispatch(
         signUp({
-          email: data.email.toLowerCase(),
+          email: data.email,
           name: data.name,
           password: data.password,
         }),

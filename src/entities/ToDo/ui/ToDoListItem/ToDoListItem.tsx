@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 16,
-    marginHorizontal: 10,
+    marginHorizontal: 15,
   },
   content: {
     flexDirection: 'row',

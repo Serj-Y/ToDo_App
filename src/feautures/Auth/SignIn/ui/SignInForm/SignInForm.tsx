@@ -64,9 +64,8 @@ const SignInForm = memo(() => {
   const onSignInPress = useCallback(
     async (data: FormData) => {
       const result = await dispatch(
-        signIn({email: data.email.toLowerCase(), password: data.password}),
+        signIn({email: data.email, password: data.password}),
       );
-      console.log(result);
       if (result.meta.requestStatus === 'fulfilled') {
         navigation.navigate('Main');
       }

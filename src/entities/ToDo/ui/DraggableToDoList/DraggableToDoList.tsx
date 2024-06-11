@@ -19,7 +19,10 @@ export const DraggableToDoList = memo(({dragItems}: Interface) => {
     ({item, drag, isActive}: RenderItemParams<ToDo>) => {
       return (
         <ScaleDecorator activeScale={1.04}>
-          <TouchableOpacity onLongPress={drag} disabled={isActive}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onLongPress={drag}
+            disabled={isActive}>
             <ToDoListItem toDo={item} />
           </TouchableOpacity>
         </ScaleDecorator>
@@ -48,6 +51,7 @@ export const DraggableToDoList = memo(({dragItems}: Interface) => {
       }}
       keyExtractor={item => item._id}
       renderItem={renderItem}
+      activationDistance={20}
     />
   );
 });

@@ -1,6 +1,6 @@
 import {Task} from '../../module/types/task';
 import {ToDo} from '../../../ToDo/model/types/toDo';
-import React, {memo, useCallback, useRef} from 'react';
+import React, {memo, useCallback, useRef, useState} from 'react';
 import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
@@ -16,6 +16,7 @@ interface Interface {
 export const DraggableTaskList = memo(({dragItems, toDo}: Interface) => {
   const dispatch = useAppDispatch();
   const itemRefs = useRef(new Map());
+  const [isDarag, setIsDrag] = useState<boolean>(false);
 
   const renderItem = useCallback(
     (params: RenderItemParams<Task>) => {
@@ -26,6 +27,7 @@ export const DraggableTaskList = memo(({dragItems, toDo}: Interface) => {
           drag={params.drag}
           item={params.item}
           toDo={toDo}
+          setIsDrag={setIsDrag}
         />
       );
     },
@@ -45,9 +47,11 @@ export const DraggableTaskList = memo(({dragItems, toDo}: Interface) => {
       data={dragItems}
       onDragEnd={({from, to}) => {
         onReordered(from, to);
+        setIsDrag(false);
       }}
       keyExtractor={item => item._id}
       renderItem={renderItem}
+      activationDistance={isDarag ? -20 : 100}
     />
   );
 });

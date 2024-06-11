@@ -28,14 +28,15 @@ type SwipeableTaskListProps = {
   drag: () => void;
   itemRefs: React.MutableRefObject<Map<any, any>>;
   toDo: ToDo;
+  setIsDrag: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const SwipeableTaskList = memo(
-  ({item, itemRefs, drag, toDo}: SwipeableTaskListProps) => {
+  ({item, itemRefs, drag, toDo, setIsDrag}: SwipeableTaskListProps) => {
     const [isEditTask, setIsEditTask] = useState<boolean>(false);
     const setEditTaskHandler = () => setIsEditTask(prev => !prev);
     return (
-      <ScaleDecorator activeScale={1.02}>
+      <ScaleDecorator activeScale={1.03}>
         <SwipeableItem
           key={item._id}
           item={item}
@@ -62,7 +63,14 @@ export const SwipeableTaskList = memo(
           snapPointsLeft={[75]}
           snapPointsRight={[75]}>
           <View>
-            <TouchableOpacity onLongPress={drag} delayLongPress={500}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onLongPress={drag}
+              onPressIn={() => setIsDrag(true)}
+              onPress={() => setIsDrag(false)}
+              delayLongPress={125}
+              delayPressIn={50}
+              onPressOut={() => setIsDrag(false)}>
               <TaskItem
                 task={item}
                 toDo={toDo}

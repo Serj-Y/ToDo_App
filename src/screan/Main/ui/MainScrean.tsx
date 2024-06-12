@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useTheme} from '../../../app/providers/ThemeProvider';
-import {AppState, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, AppState, StyleSheet, View} from 'react-native';
 import {Header} from '../../../widgets/Header';
 import {ToDoList} from '../../../entities/ToDo';
 import {useAppDispatch} from '../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
@@ -50,8 +50,15 @@ const MainScreen: React.FC = () => {
       {userInited && (
         <>
           <CreateToDo />
-          <View style={styles.content}>
-            {inited && <ToDoList toDos={toDo} />}
+          {isLoading && (
+            <ActivityIndicator
+              color={theme.invertedBackgroundColor}
+              style={styles.content}
+              size={'large'}
+            />
+          )}
+          <View style={[styles.content, {opacity: isLoading ? 0.2 : 1}]}>
+            {inited && <ToDoList toDos={toDo} isLoading={isLoading} />}
           </View>
         </>
       )}

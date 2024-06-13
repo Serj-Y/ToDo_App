@@ -2,14 +2,11 @@ import {createSlice} from '@reduxjs/toolkit';
 import {UserSchema} from '../types/user';
 import {fetchUserData} from '../services/fetchUserData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  ACCESS_TOKEN,
-  REFRESH_TOKEN,
-} from '../../../../shared/consts/localStorage.ts';
-import {signIn} from '../../../../feautures/Auth/SignIn/model/services/signIn/signIn.ts';
-import {signUp} from '../../../../feautures/Auth/SignUp/model/services/signUp/signUp.ts';
-import {changePassword} from '../../../../feautures/EditUser/model/services/changePassword/changePassword.ts';
-import {changeUserName} from '../../../../feautures/EditUser/model/services/changeUserName/changeUserName.ts';
+import {ACCESS_TOKEN, REFRESH_TOKEN} from '@shared/consts/localStorage.ts';
+import {signIn} from '@features/Auth/SignIn/model/services/signIn/signIn.ts';
+import {signUp} from '@features/Auth/SignUp/model/services/signUp/signUp.ts';
+import {changePassword} from '@features/EditUser/model/services/changePassword/changePassword.ts';
+import {changeUserName} from '@features/EditUser/model/services/changeUserName/changeUserName.ts';
 
 const initialState: UserSchema = {
   error: '',
@@ -101,7 +98,7 @@ const userSlice = createSlice({
       })
       .addCase(changeUserName.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload as string;
       });
   },
 });

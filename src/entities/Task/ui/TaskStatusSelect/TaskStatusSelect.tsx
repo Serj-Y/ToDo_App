@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import {useTheme} from '../../../../app/providers/ThemeProvider';
+import {useTheme} from '@app/providers/ThemeProvider';
 
 interface currencySelectProps {
   value?: TaskStatus;

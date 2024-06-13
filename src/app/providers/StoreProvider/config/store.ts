@@ -16,11 +16,11 @@ import {
 } from 'redux-persist';
 import {StateSchema, ThunkExtraArg} from './StateSchema';
 import {createReducerManager} from './reducerManager';
-import {toDoReducers} from '../../../../entities/ToDo/model/slice/toDoSlice';
-import {$api} from '../../../../shared/api/api.ts';
-import {userReducer} from '../../../../entities/User';
-import {signInReducer} from '../../../../feautures/Auth/SignIn/model/slice/signInSlice.ts';
-import {signUpReducer} from '../../../../feautures/Auth/SignUp/model/slice/signUpSlice.ts';
+import {toDoReducers} from '@entities/ToDo/model/slice/toDoSlice.ts';
+import {$api} from '@shared/api/api.ts';
+import {userReducer} from '@entities/User';
+import {signInReducer} from '@features/Auth/SignIn/model/slice/signInSlice.ts';
+import {signUpReducer} from '@features/Auth/SignUp/model/slice/signUpSlice.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const rootMigrations = {

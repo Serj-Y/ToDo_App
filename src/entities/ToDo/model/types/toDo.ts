@@ -1,5 +1,5 @@
 import {Update} from '@reduxjs/toolkit';
-import {Task} from '../../../Task/module/types/task.ts';
+import {Task} from '@entities/Task';
 
 export interface ToDo {
   _id: string;

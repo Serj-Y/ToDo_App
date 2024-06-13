@@ -1,6 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {ToDo} from '../../types/toDo';
-import {ThunkConfig} from '../../../../../app/providers/StoreProvider';
+import {ThunkConfig} from '@app/providers/StoreProvider';
 
 interface FetchToDoProps {
   replace?: boolean;

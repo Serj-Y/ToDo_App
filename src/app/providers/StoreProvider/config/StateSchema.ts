@@ -6,10 +6,10 @@ import {
   ReducersMapObject,
 } from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
-import {ToDoSchema} from '../../../../entities/ToDo/model/types/toDoSchema.ts';
-import {UserSchema} from '../../../../entities/User';
-import {SignInSchema} from '../../../../feautures/Auth/SignIn/model/types/signInSchema.ts';
-import {SignUpSchema} from '../../../../feautures/Auth/SignUp/model/types/signUpSchema.ts';
+import {ToDoSchema} from '@app/entities/ToDo/model/types/toDoSchema.ts';
+import {UserSchema} from '@app/entities/User';
+import {SignInSchema} from '@app/features/Auth/SignIn/model/types/signInSchema.ts';
+import {SignUpSchema} from '@app/features/Auth/SignUp/model/types/signUpSchema.ts';
 
 export interface StateSchema {
   toDo: ToDoSchema;

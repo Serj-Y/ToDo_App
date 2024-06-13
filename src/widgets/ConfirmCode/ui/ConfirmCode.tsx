@@ -6,7 +6,7 @@ import {
 } from 'react-native-confirmation-code-field';
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
-import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
+import {PressableOpacity} from '@shared/ui';
 
 interface Theme {
   backgroundColor: string;

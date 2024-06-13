@@ -1,11 +1,11 @@
-import {Task} from '../../module/types/task';
-import {ToDo} from '../../../ToDo/model/types/toDo';
+import {Task} from '@entities/Task';
+import {ToDo} from '@entities/ToDo';
 import React, {memo, useCallback, useRef, useState} from 'react';
 import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
-import {changeTaskOrder} from '../../../../feautures/UpdateTask/model/services/changeTaskOrder.ts';
-import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
+import {changeTaskOrder} from '@features/UpdateTask/model/services/changeTaskOrder.ts';
+import {useAppDispatch} from '@shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import {SwipeableTaskList} from '../SwipeableTaskList/SwipeableTaskList.tsx';
 
 interface Interface {

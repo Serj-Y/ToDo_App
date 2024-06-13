@@ -1,8 +1,8 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getUserInited} from '../selectors/getUserInited/getUserInited';
+import {getUserInited} from '@entities/User';
 import {fetchUserData} from './fetchUserData';
 import {userActions} from '../slice/userSlice';
-import {ThunkConfig} from '../../../../app/providers/StoreProvider';
+import {ThunkConfig} from '@app/providers/StoreProvider';
 
 export const initUser = createAsyncThunk<void, void, ThunkConfig<string>>(
   'user/initUser',

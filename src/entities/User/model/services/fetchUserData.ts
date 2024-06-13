@@ -1,6 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {User} from '../types/user.ts';
-import {ThunkConfig} from '../../../../app/providers/StoreProvider';
+import {ThunkConfig} from '@app/providers/StoreProvider';
 
 export const fetchUserData = createAsyncThunk<User, void, ThunkConfig<string>>(
   'user',

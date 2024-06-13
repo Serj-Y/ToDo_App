@@ -5,9 +5,9 @@ import DraggableFlatList, {
   RenderItemParams,
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
-import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
+import {useAppDispatch} from '@shared/lib/hooks';
 import {ToDoListItem} from '../ToDoListItem/ToDoListItem.tsx';
-import {changeToDoOrder} from '../../../../feautures/UpdateToDoList/model/services/changeToDoOrder.ts';
+import {changeToDoOrder} from '@features/UpdateToDoList';
 
 interface Interface {
   dragItems: ToDo[];

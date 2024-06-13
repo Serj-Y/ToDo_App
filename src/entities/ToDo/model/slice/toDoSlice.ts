@@ -2,17 +2,16 @@ import {createEntityAdapter, createSlice, Update} from '@reduxjs/toolkit';
 import {fetchToDo} from '../services/fetchToDo/fetchToDo';
 import {ToDo} from '../types/toDo';
 import {ToDoSchema} from '../types/toDoSchema';
-import {StateSchema} from '../../../../app/providers/StoreProvider';
+import {StateSchema} from '@app/providers/StoreProvider';
 import {TaskStatus} from '../../../Task/module/types/taskStatus.ts';
-import {deleteToDo} from '../../../../feautures/DeleteToDo/model/services/deleteToDo.ts';
-import {updateToDoName} from '../../../../feautures/UpdateToDoList/model/services/updateToDoName.ts';
-import {changeToDoOrder} from '../../../../feautures/UpdateToDoList/model/services/changeToDoOrder.ts';
-import {createToDo} from '../../../../feautures/CreateToDo/model/services/createToDo.ts';
-import {createTask} from '../../../../feautures/CreateTask/model/services/createTask.ts';
-import {updateTask} from '../../../../feautures/UpdateTask/model/services/updateTask.ts';
-import {changeTaskOrder} from '../../../../feautures/UpdateTask/model/services/changeTaskOrder.ts';
-import {deleteTask} from '../../../../feautures/DeleteTask/model/services/deleteTask.ts';
-import NetInfo from '@react-native-community/netinfo';
+import {deleteToDo} from '@features/DeleteToDo/model/services/deleteToDo.ts';
+import {updateToDoName} from '@features/UpdateToDoList/model/services/updateToDoName.ts';
+import {changeToDoOrder} from '@features/UpdateToDoList/model/services/changeToDoOrder.ts';
+import {createToDo} from '@features/CreateToDo/model/services/createToDo.ts';
+import {createTask} from '@features/CreateTask/model/services/createTask.ts';
+import {updateTask} from '@features/UpdateTask/model/services/updateTask.ts';
+import {changeTaskOrder} from '@features/UpdateTask/model/services/changeTaskOrder.ts';
+import {deleteTask} from '@features/DeleteTask/model/services/deleteTask.ts';
 
 const toDoAdapter = createEntityAdapter<ToDo>({
   selectId: toDo => toDo._id,

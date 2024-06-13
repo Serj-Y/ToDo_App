@@ -1,4 +1,4 @@
-import {Task} from '../../module/types/task.ts';
+import {Task} from '@entities/Task';
 import React, {
   Dispatch,
   memo,
@@ -6,20 +6,20 @@ import React, {
   useCallback,
   useState,
 } from 'react';
-import {ToDo} from '../../../ToDo/model/types/toDo.ts';
+import {ToDo} from '@entities/ToDo';
 import {ScaleDecorator} from 'react-native-draggable-flatlist';
 import SwipeableItem, {
   OpenDirection,
   useSwipeableItemParams,
 } from 'react-native-swipeable-item';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {TaskItem} from '../TaskItem/TaskItem.tsx';
-import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
-import {deleteTask} from '../../../../feautures/DeleteTask';
+import {TaskItem} from '@entities/Task';
+import {deleteTask} from '@features/DeleteTask';
 import Animated from 'react-native-reanimated';
-import PressableOpacity from '../../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
+import PressableOpacity from '@shared/ui/PressableOpacity/PressableOpacity.tsx';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useTheme} from '../../../../app/providers/ThemeProvider';
+import {useTheme} from '@app/providers/ThemeProvider';
+import {useAppDispatch} from '@shared/lib/hooks';
 
 const OVERSWIPE_DIST = 20;
 

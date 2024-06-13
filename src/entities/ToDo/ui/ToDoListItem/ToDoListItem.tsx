@@ -1,15 +1,15 @@
 import React, {memo, useState} from 'react';
 import {ToDo} from '../../model/types/toDo.ts';
-import {Card} from '../../../../shared/ui/Card/Card.tsx';
 import {StyleSheet, Text, View} from 'react-native';
-import {UpdateToDoList} from '../../../../feautures/UpdateToDoList';
-import {DeleteToDo} from '../../../../feautures/DeleteToDo';
-import {useTheme} from '../../../../app/providers/ThemeProvider';
-import {CreateTask} from '../../../../feautures/CreateTask';
-import {sortByOrder} from '../../../../shared/lib/sortByOrder/sortByOrder.ts';
-import {DraggableTaskList} from '../../../Task/ui/DraggableTaskList/DraggableTaskList.tsx';
-import PressableOpacity from '../../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
+import {UpdateToDoList} from '@features/UpdateToDoList';
+import {DeleteToDo} from '@features/DeleteToDo';
+import {useTheme} from '@app/providers/ThemeProvider';
+import {CreateTask} from '@features/CreateTask';
+import {sortByOrder} from '@shared/lib/sortByOrder/sortByOrder.ts';
+import PressableOpacity from '@shared/ui/PressableOpacity/PressableOpacity.tsx';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Card} from '@shared/ui';
+import {DraggableTaskList} from '@entities/Task';
 
 interface ToDoListItemProps {
   toDo: ToDo;

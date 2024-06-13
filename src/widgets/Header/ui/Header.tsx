@@ -1,15 +1,15 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useTheme} from '../../../app/providers/ThemeProvider';
+import {useTheme} from '@app/providers/ThemeProvider';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {getUserAuthData} from '../../../entities/User';
+import {getUserAuthData} from '@entities/User';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../../app/types/route.ts';
-import PressableOpacity from '../../../shared/ui/pressableOpacity/PressableOpacity.tsx';
+import {RootStackParamList} from '@app/types/route.ts';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {NetworkStatus} from '../../../shared/lib/hooks/useNetworkAvailability/NetWorkStatus.tsx';
+import {PressableOpacity} from '@shared/ui';
+import {NetworkStatus} from '@shared/lib/hooks/useNetworkAvailability/NetWorkStatus.tsx';
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 const Header: React.FC = () => {

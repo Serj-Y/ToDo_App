@@ -1,15 +1,15 @@
 import React, {memo, useCallback} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
-import {Task} from '../../module/types/task';
-import {ToDo} from '../../../ToDo/model/types/toDo';
+import {Task} from '@entities/Task';
+import {ToDo} from '@entities/ToDo';
 import {TaskStatus} from '../../module/types/taskStatus';
-import {useAppDispatch} from '../../../../shared/lib/hooks/useAppDispatch/useAppDispatch';
-import {updateTask} from '../../../../feautures/UpdateTask/model/services/updateTask';
-import {UpdateTask} from '../../../../feautures/UpdateTask';
-import {useTheme} from '../../../../app/providers/ThemeProvider';
-import {Card} from '../../../../shared/ui/Card/Card';
-import {TaskStatusSelect} from '../TaskStatusSelect/TaskStatusSelect';
+import {updateTask} from '@features/UpdateTask/model/services/updateTask.ts';
+import {UpdateTask} from '@features/UpdateTask';
+import {useTheme} from '@app/providers/ThemeProvider';
+import {Card} from '@shared/ui/Card/Card.tsx';
+import {TaskStatusSelect} from '@entities/Task';
+import {useAppDispatch} from '@shared/lib/hooks';
 
 type TaskProps = {
   task: Task;

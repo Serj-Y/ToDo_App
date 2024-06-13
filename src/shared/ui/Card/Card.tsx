@@ -1,6 +1,6 @@
 import {StyleSheet, View, ViewProps} from 'react-native';
 import React, {ReactNode} from 'react';
-import {useTheme} from '../../../app/providers/ThemeProvider';
+import {useTheme} from '@app/providers/ThemeProvider';
 
 interface CardProps extends ViewProps {
   children: ReactNode;

@@ -20,6 +20,10 @@ import PressableOpacity from '@shared/ui/PressableOpacity/PressableOpacity.tsx';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTheme} from '@app/providers/ThemeProvider';
 import {useAppDispatch} from '@shared/lib/hooks';
+import {
+  HAPTIC_FEEDBACK,
+  HapticFeedback,
+} from '@shared/ui/HapticFeedBack/hapticFeedBack.ts';
 
 const OVERSWIPE_DIST = 20;
 
@@ -35,6 +39,10 @@ export const SwipeableTaskList = memo(
   ({item, itemRefs, drag, toDo, setIsDrag}: SwipeableTaskListProps) => {
     const [isEditTask, setIsEditTask] = useState<boolean>(false);
     const setEditTaskHandler = () => setIsEditTask(prev => !prev);
+    const onLongPressHandler = () => {
+      HapticFeedback({feedbackType: HAPTIC_FEEDBACK.IMPACTHEAVY});
+      drag();
+    };
     return (
       <ScaleDecorator activeScale={1.03}>
         <SwipeableItem
@@ -65,7 +73,7 @@ export const SwipeableTaskList = memo(
           <View>
             <TouchableOpacity
               activeOpacity={0.8}
-              onLongPress={drag}
+              onLongPress={onLongPressHandler}
               onPressIn={() => setIsDrag(true)}
               onPress={() => setIsDrag(false)}
               delayLongPress={125}
@@ -88,6 +96,7 @@ export const SwipeableTaskList = memo(
 function UnderlayLeft({toDo}: {toDo: ToDo}) {
   const {item, close} = useSwipeableItemParams<Task>();
   const dispatch = useAppDispatch();
+  HapticFeedback({feedbackType: HAPTIC_FEEDBACK.IMPACTLIGHT});
 
   const onDeleteTask = useCallback(() => {
     dispatch(deleteTask({taskId: item._id, toDoId: toDo._id}));
@@ -114,6 +123,7 @@ function UnderlayRight({
 }) {
   const {close} = useSwipeableItemParams<Task>();
   const {theme} = useTheme();
+  HapticFeedback({feedbackType: HAPTIC_FEEDBACK.IMPACTLIGHT});
   return (
     <Animated.View style={[styles.row, styles.underlayRight]}>
       <PressableOpacity

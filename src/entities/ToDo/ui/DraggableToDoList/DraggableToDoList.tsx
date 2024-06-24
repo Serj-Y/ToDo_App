@@ -8,6 +8,10 @@ import DraggableFlatList, {
 import {useAppDispatch} from '@shared/lib/hooks';
 import {ToDoListItem} from '../ToDoListItem/ToDoListItem.tsx';
 import {changeToDoOrder} from '@features/UpdateToDoList';
+import {
+  HAPTIC_FEEDBACK,
+  HapticFeedback,
+} from '@shared/ui/HapticFeedBack/hapticFeedBack.ts';
 
 interface Interface {
   dragItems: ToDo[];
@@ -17,11 +21,15 @@ export const DraggableToDoList = memo(({dragItems}: Interface) => {
   const dispatch = useAppDispatch();
   const renderItem = useCallback(
     ({item, drag, isActive}: RenderItemParams<ToDo>) => {
+      const onLongPressHandler = () => {
+        HapticFeedback({feedbackType: HAPTIC_FEEDBACK.IMPACTHEAVY});
+        drag();
+      };
       return (
         <ScaleDecorator activeScale={1.04}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onLongPress={drag}
+            onLongPress={onLongPressHandler}
             disabled={isActive}>
             <ToDoListItem toDo={item} />
           </TouchableOpacity>
@@ -48,6 +56,7 @@ export const DraggableToDoList = memo(({dragItems}: Interface) => {
       data={dragItems}
       onDragEnd={({from, to}) => {
         onReordered(from, to);
+        HapticFeedback({feedbackType: HAPTIC_FEEDBACK.SUCCESS});
       }}
       keyExtractor={item => item._id}
       renderItem={renderItem}

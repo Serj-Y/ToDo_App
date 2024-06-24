@@ -7,6 +7,10 @@ import DraggableFlatList, {
 import {changeTaskOrder} from '@features/UpdateTask/model/services/changeTaskOrder.ts';
 import {useAppDispatch} from '@shared/lib/hooks/useAppDispatch/useAppDispatch.ts';
 import {SwipeableTaskList} from '../SwipeableTaskList/SwipeableTaskList.tsx';
+import {
+  HAPTIC_FEEDBACK,
+  HapticFeedback,
+} from '@shared/ui/HapticFeedBack/hapticFeedBack.ts';
 
 interface Interface {
   dragItems: Task[];
@@ -48,6 +52,7 @@ export const DraggableTaskList = memo(({dragItems, toDo}: Interface) => {
       onDragEnd={({from, to}) => {
         onReordered(from, to);
         setIsDrag(false);
+        HapticFeedback({feedbackType: HAPTIC_FEEDBACK.SUCCESS});
       }}
       keyExtractor={item => item._id}
       renderItem={renderItem}

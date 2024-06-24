@@ -1,5 +1,9 @@
 import {StyleProp, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {
+  HapticFeedback,
+  HAPTIC_FEEDBACK,
+} from '../HapticFeedBack/hapticFeedBack.ts';
 
 type PressableOpacityProps = {
   children: React.ReactNode;
@@ -16,9 +20,15 @@ function PressableOpacity({
   onLongPress,
   style,
 }: PressableOpacityProps) {
+  const onPressHandler = () => {
+    HapticFeedback({feedbackType: HAPTIC_FEEDBACK.SUCCESS});
+    if (onPress) {
+      onPress();
+    }
+  };
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={onPressHandler}
       disabled={disabled}
       onLongPress={onLongPress}
       style={[

@@ -4,6 +4,8 @@ import {useSelector} from 'react-redux';
 import {getLoginError} from '../../model/selectors/getLoginError/getLoginError.ts';
 import {signIn} from '../../model/services/signIn/signIn.ts';
 import {
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -77,7 +79,9 @@ const SignInForm = memo(() => {
   // };
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={100}>
         <Text style={[styles.title, {color: theme.primaryColor}]}>
           {t('Sign in')}
         </Text>
@@ -108,6 +112,7 @@ const SignInForm = memo(() => {
                       color: theme.primaryColor,
                     },
                   ]}
+                  onSubmitEditing={handleSubmit(onSignInPress)}
                   onChangeText={onChange}
                   placeholder={t('Email')}
                   placeholderTextColor={theme.invertedBackgroundColor}
@@ -135,7 +140,8 @@ const SignInForm = memo(() => {
                 <TextInput
                   style={[styles.input, {color: theme.primaryColor}]}
                   placeholderTextColor={theme.invertedBackgroundColor}
-                  placeholder={t('Enter current password')}
+                  placeholder={t('Password')}
+                  onSubmitEditing={handleSubmit(onSignInPress)}
                   onChangeText={onChange}
                   value={value}
                   secureTextEntry={!showPassword}
@@ -178,7 +184,7 @@ const SignInForm = memo(() => {
             {t('Sign in')}
           </Text>
         </PressableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 });

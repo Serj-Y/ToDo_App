@@ -112,9 +112,9 @@ const SignUpForm = memo(() => {
                   ]}
                   onChangeText={onChange}
                   placeholder={t('Name')}
+                  onSubmitEditing={handleSubmit(onSubmit)}
                   placeholderTextColor={theme.invertedBackgroundColor}
                   value={value}
-                  keyboardType="email-address"
                 />
               </View>
             </>
@@ -145,6 +145,7 @@ const SignUpForm = memo(() => {
                   onChangeText={onChange}
                   placeholder={t('Email')}
                   placeholderTextColor={theme.invertedBackgroundColor}
+                  onSubmitEditing={handleSubmit(onSubmit)}
                   value={value}
                   keyboardType="email-address"
                 />
@@ -169,8 +170,9 @@ const SignUpForm = memo(() => {
                 <TextInput
                   style={[styles.input, {color: theme.primaryColor}]}
                   placeholderTextColor={theme.invertedBackgroundColor}
-                  placeholder={t('Enter current password')}
+                  placeholder={t('Password')}
                   onChangeText={onChange}
+                  onSubmitEditing={handleSubmit(onSubmit)}
                   value={value}
                   secureTextEntry={!showPassword}
                 />

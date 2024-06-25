@@ -88,6 +88,7 @@ export const CreateTask = ({toDoId}: CreateTaskProps) => {
                 errors.taskName ? errors.taskName.message : t('Enter task name')
               }
               onChangeText={value => field.onChange(value)}
+              onSubmitEditing={handleSubmit(onSubmit)}
             />
           </View>
         )}

@@ -52,6 +52,7 @@ export const UpdateToDoList = ({
               ]}
               value={field.value}
               onChangeText={field.onChange}
+              onSubmitEditing={handleSubmit(onSubmit)}
             />
           )}
         />

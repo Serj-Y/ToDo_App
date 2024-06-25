@@ -100,6 +100,7 @@ const ChangeUserPasswordForm = memo(() => {
                 placeholderTextColor={theme.invertedBackgroundColor}
                 placeholder={t('Enter current password')}
                 onChangeText={onChange}
+                onSubmitEditing={handleSubmit(onSubmit)}
                 value={value}
                 secureTextEntry={!showPassword}
               />
@@ -139,6 +140,7 @@ const ChangeUserPasswordForm = memo(() => {
                 ]}
                 placeholderTextColor={theme.invertedBackgroundColor}
                 placeholder={t('Enter new password')}
+                onSubmitEditing={handleSubmit(onSubmit)}
                 onChangeText={onChange}
                 value={value}
                 secureTextEntry={!showNewPassword}
@@ -179,6 +181,7 @@ const ChangeUserPasswordForm = memo(() => {
                 ]}
                 placeholderTextColor={theme.invertedBackgroundColor}
                 placeholder={t('Enter confirm new password')}
+                onSubmitEditing={handleSubmit(onSubmit)}
                 onChangeText={onChange}
                 value={value}
                 secureTextEntry={!showRepeatPassword}

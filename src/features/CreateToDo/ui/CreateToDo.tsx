@@ -77,6 +77,7 @@ export const CreateToDo = memo(() => {
                 errors.name ? errors.name.message : t('Enter ToDo list name')
               }
               onChangeText={value => field.onChange(value)}
+              onSubmitEditing={handleSubmit(onSubmit)}
             />
           </View>
         )}

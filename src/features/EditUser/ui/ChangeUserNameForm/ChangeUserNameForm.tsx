@@ -88,6 +88,7 @@ const ChangeUserNameForm = memo(
                 placeholderTextColor={theme.invertedBackgroundColor}
                 placeholder={t('Enter new user name')}
                 onChangeText={onChange}
+                onSubmitEditing={handleSubmit(onSubmit)}
                 value={value}
                 keyboardType="default"
               />

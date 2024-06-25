@@ -67,20 +67,13 @@ export const UpdateTask = ({
                   },
                 ]}
                 {...field}
+                onSubmitEditing={handleSubmit(onSubmit)}
                 onChangeText={value => field.onChange(value)}
               />
             )}
           />
         </>
         <>
-          {/*<Controller*/}
-          {/*  name="taskStatus"*/}
-          {/*  control={control}*/}
-          {/*  defaultValue={taskStatus}*/}
-          {/*  render={({field}) => (*/}
-          {/*    <TaskStatusSelect value={field.value} onChange={field.onChange} />*/}
-          {/*  )}*/}
-          {/*/>*/}
           <View style={styles.buttonWrapper}>
             <PressableOpacity
               style={[styles.button]}

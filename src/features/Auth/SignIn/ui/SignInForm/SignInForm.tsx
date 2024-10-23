@@ -74,9 +74,9 @@ const SignInForm = memo(() => {
     [dispatch, navigation],
   );
 
-  // const onForgotPasswordPress = () => {
-  //   navigation.navigate('ForgotPassword');
-  // };
+  const onForgotPasswordPress = () => {
+    navigation.navigate('ForgotPassword');
+  };
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <KeyboardAvoidingView
@@ -159,19 +159,18 @@ const SignInForm = memo(() => {
             </>
           )}
         />
-        {/*<PressableOpacity*/}
-        {/*  onPress={onForgotPasswordPress}*/}
-        {/*  disabled={isLoading}*/}
-        {/*  style={[*/}
-        {/*    styles.button,*/}
-        {/*    {backgroundColor: theme.invertedBackgroundColor},*/}
-        {/*  ]}>*/}
-        {/*  <Text*/}
-        {/*    style={[styles.buttonText, {color: theme.invertedPrimaryColor}]}>*/}
-        {/*    {t('Forgot password')}*/}
-        {/*  </Text>*/}
-        {/*</PressableOpacity>*/}
-
+        <PressableOpacity
+          onPress={onForgotPasswordPress}
+          disabled={isLoading}
+          style={[
+            styles.button,
+            {backgroundColor: theme.invertedBackgroundColor},
+          ]}>
+          <Text
+            style={[styles.buttonText, {color: theme.invertedPrimaryColor}]}>
+            {t('Forgot password')}
+          </Text>
+        </PressableOpacity>
         <PressableOpacity
           onPress={handleSubmit(onSignInPress)}
           disabled={isLoading}
